@@ -13,40 +13,33 @@ FOR: 'for';
 RETURN: 'return';
 VOID: 'void';
 
-// Identifiers
-IDENT: [a-zA-Z_] [a-zA-Z_0-9]*;
-
-// Constants
-NUM_CONST: [0-9]+;
-CHAR_CONST: '\'' [a-zA-Z] '\'';
-BOOL_CONST: 'true' | 'false';
+// const
+Num_Const: [0-9]+;
+Char_Const: '\'' [a-zA-Z] '\'';
+Boolean_Const: 'true' | 'false';
+Val_Const: Num_Const | Char_Const | Boolean_Const;
+Type_Const: 'int' | 'char' | 'boolean';
 
 // Operators
-ADDOP: '+' | '-';
-MULOP: '*' | '/' | '%';
-RELOP: '==' | '!=' | '>' | '>=' | '<' | '<=';
-ASSIGNOP: '=';
+Assignop: '=';
+Relop: '==' | '!=' | '>' | '>=' | '<' | '<=';
+Addop: '+' | '-';
+Mulop: '*' | '/' | '%';
 
-// Other symbols
-SEMICOLON: ';';
-COMMA: ',';
-DOT: '.';
-LPAREN: '(';
-RPAREN: ')';
-LBRACKET: '[';
-RBRACKET: ']';
-LBRACE: '{';
-RBRACE: '}';
+
+
+ID: [a-zA-Z_] [a-zA-Z_0-9]*;
+STRING: '"'[a-z]*'"';
+ID_String: ID | STRING;
+
+WHITE_SPACE: [ \t\r\n] -> skip;
+OTHER: .;
 
 // #####    parser  #####
 
 // Define rules for statements and expressions similarly.
 // Example: ifStatement, forStatement, returnStatement, etc.
 
-r  : 'hello' ID EOF ;         // match keyword hello followed by an identifier
+project: 'project' ID;
 
-ID : [a-z]+ ;             // match lower-case identifiers
-
-WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
-
-OTHER: . ;
+constDecl: 'const' Type_Const ID '=' Type_Const (',' ID '=' Val_Const)* ';';
