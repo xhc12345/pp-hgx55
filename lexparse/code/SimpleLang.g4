@@ -2,36 +2,17 @@ grammar SimpleLang;
 
 // #####    lexer   #####
 
-// keywords
-PROJECT: 'project';
-CLASS: 'class';
-INTERFACE: 'interface';
-ENUM: 'enum';
-CONST: 'const';
-IF: 'if';
-FOR: 'for';
-RETURN: 'return';
-VOID: 'void';
-
 // constants
-Num_Const: '-'?[0-9]+;
-Char_Const: '\''.'\'';
-Boolean_Const: 'true' | 'false';
+Num_Const:      '-'?[0-9]+;
+Char_Const:     '\''.'\'';
+Boolean_Const:  'true' | 'false';
 
-// operators
-Assignop: '=';
-Relop: '==' | '!=' | '>' | '>=' | '<' | '<=';
-Addop: '+' | '-';
-Mulop: '*' | '/' | '%';
-
-
-
-ID: [a-zA-Z_] [a-zA-Z_0-9]*;
+ID:     [a-zA-Z_] [a-zA-Z_0-9]*;
 STRING: '"'[a-z]*'"';
 
-WHITE_SPACE: [ \t\r\n] -> skip;
-COMMENT: '//' ~[\r\n]* -> skip;
-OTHER: .;
+WHITE_SPACE:    [ \t\r\n] -> skip;
+COMMENT:        '//' ~[\r\n]* -> skip;
+OTHER:          .;
 
 // #####    parser  #####
 
@@ -39,7 +20,7 @@ project:
     'project' ID (
         constDecl | varDecl | classDecl | enumDecl | interfaceDecl
     )* '{' 
-        methodDecl+     // at least the entry() method
+        methodDecl*     // at least the void entry() method in semantic analyze
     '}' EOF;
 
 constDecl:
@@ -60,9 +41,9 @@ enumDecl:
 
 varDecl:
     type
-        ID '[]'? 
+        ID ('['']')? 
         (','
-            ID '[]'?
+            ID ('['']')?
         )*
     ';';
 
@@ -89,8 +70,54 @@ methodDecl:
         statement*
     '}';
 
-formPars: type ID '[]'? (',' type ID '[]'?)*;
+formPars: type ID ('['']')? (',' type ID ('['']')?)*;
 
-type: 'int' | 'char' | 'boolean';   // TODO: change this
+type: ID;
 
-statement: 'blahblahblah;';
+statement:
+    designatorStatement ';' 
+    |   'if' '(' condition ')'
+            statement
+        ('else'
+            statement
+        )?
+    |   'for' '('
+            designatorStatement? ';'
+            condition? ';'
+            designatorStatement?
+        ')'
+            statement
+    |   'break' ';'
+    |   'continue' ';'
+    |   'return' expr? ';'
+    |   'read' '(' designator ')' ';'
+    |   'print' '(' expr (',' Num_Const)? ')' ';'
+    |   '{' statement* '}';
+
+designatorStatement: designator (assignop expr | '(' actPars? ')' | '++' | '--');
+
+actPars: expr (',' expr)*;
+
+condition: condTerm ('||' condTerm)*;
+condTerm: condFact ('&&' condFact)*;
+condFact: expr (relop expr)?;
+
+expr: '-'? term (addop term)*;
+
+term: factor (mulop factor)*;
+
+factor:
+    designator ('(' actPars? ')')?
+    | Num_Const
+    | Char_Const
+    | Boolean_Const
+    | 'new' type ('[' expr ']')?
+    | '(' expr ')';
+
+designator: ID (('.' ID) | ('[' expr ']'))*;
+
+// operators
+assignop:   '=';
+relop:      '==' | '!=' | '>' | '>=' | '<' | '<=';
+addop:      '+' | '-';
+mulop:      '*' | '/' | '%';

@@ -40,7 +40,7 @@ interface I {
     void f(char ch, int a, int arg)
         int x;
         {
-            blahblahblah;
+            blahblahblah--;
         }
     void entry(){}
 }
