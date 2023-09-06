@@ -6,6 +6,30 @@ const int d=5,e =-4, f= 3445;
 const char g='c' ,i=3;
 const boolean j=false, k=true;
 enum Num { ZERO=-000}
+
+class nothing implements int {
+    {
+    }
+}
+
+class varOnly implements int {
+    int pos[], neg;
+}
+
+class methodsOnly implements int {
+    {
+        void entry(){}
+    }
+}
+
+class methodsAndVar implements int {
+    int pos[], neg[];
+    {
+        void entry(){}
+        void entry(){}
+    }
+}
+
 {
     void entry(){}
 }

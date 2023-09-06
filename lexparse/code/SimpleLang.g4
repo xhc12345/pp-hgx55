@@ -17,7 +17,7 @@ VOID: 'void';
 Num_Const: '-'?[0-9]+;
 Char_Const: '\''.'\'';
 Boolean_Const: 'true' | 'false';
-Type_Const: 'int' | 'char' | 'boolean';
+Type: 'int' | 'char' | 'boolean';   // TODO: change this
 
 // operators
 Assignop: '=';
@@ -44,7 +44,7 @@ project:
     '}' EOF;
 
 constDecl:
-    'const' Type_Const
+    'const' Type
         ID '=' (Num_Const | Char_Const | Boolean_Const)
         (',' 
             ID '=' (Num_Const | Char_Const | Boolean_Const)
@@ -60,13 +60,23 @@ enumDecl:
     '}';
 
 varDecl:
-    Type_Const
+    Type
         ID '[]'? 
         (','
             ID '[]'?
         )*
     ';';
 
-classDecl: 'class C implements I';
+classDecl:
+    'class' ID
+    ('extends' Type)?
+    ('implements' Type (',' Type)*)? 
+    '{'
+        varDecl*
+        ('{'
+            methodDecl*
+        '}')?
+    '}';
+
 interfaceDecl: 'interface I';
 methodDecl: 'void entry(){}';
