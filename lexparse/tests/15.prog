@@ -30,6 +30,17 @@ class methodsAndVar implements int {
     }
 }
 
+interface I {
+    void setp(int i, int j);
+    void delo();
+    int getn(int i);
+}
+
 {
+    void f(char ch, int a, int arg)
+        int x;
+        {
+            blahblahblah;
+        }
     void entry(){}
 }

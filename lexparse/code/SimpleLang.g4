@@ -17,7 +17,6 @@ VOID: 'void';
 Num_Const: '-'?[0-9]+;
 Char_Const: '\''.'\'';
 Boolean_Const: 'true' | 'false';
-Type: 'int' | 'char' | 'boolean';   // TODO: change this
 
 // operators
 Assignop: '=';
@@ -44,7 +43,7 @@ project:
     '}' EOF;
 
 constDecl:
-    'const' Type
+    'const' type
         ID '=' (Num_Const | Char_Const | Boolean_Const)
         (',' 
             ID '=' (Num_Const | Char_Const | Boolean_Const)
@@ -60,7 +59,7 @@ enumDecl:
     '}';
 
 varDecl:
-    Type
+    type
         ID '[]'? 
         (','
             ID '[]'?
@@ -69,8 +68,8 @@ varDecl:
 
 classDecl:
     'class' ID
-    ('extends' Type)?
-    ('implements' Type (',' Type)*)? 
+    ('extends' type)?
+    ('implements' type (',' type)*)? 
     '{'
         varDecl*
         ('{'
@@ -78,5 +77,20 @@ classDecl:
         '}')?
     '}';
 
-interfaceDecl: 'interface I';
-methodDecl: 'void entry(){}';
+interfaceDecl:
+    'interface' ID '{'
+        interfaceMethodDecl*
+    '}';
+
+interfaceMethodDecl: (type | 'void') ID '(' formPars? ')' ';';
+
+methodDecl:
+    (type | 'void') ID '(' formPars? ')' varDecl* '{'
+        statement*
+    '}';
+
+formPars: type ID '[]'? (',' type ID '[]'?)*;
+
+type: 'int' | 'char' | 'boolean';   // TODO: change this
+
+statement: 'blahblahblah;';
