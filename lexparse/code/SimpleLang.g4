@@ -40,6 +40,6 @@ OTHER: .;
 // Define rules for statements and expressions similarly.
 // Example: ifStatement, forStatement, returnStatement, etc.
 
-project: 'project' ID;
+project: 'project' ID EOF;
 
 constDecl: 'const' Type_Const ID '=' Type_Const (',' ID '=' Val_Const)* ';';
