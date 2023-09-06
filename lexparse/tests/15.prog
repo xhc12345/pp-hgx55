@@ -1,7 +1,10 @@
 project testing_1234
-var a;
-var b;
-const int a=5,c =-4, d= 3445;
+int a;
+char b;
+boolean c;
+const int d=5,e =-4, f= 3445;
+const char g='c' ,i=3;
+const boolean j=false, k=true;
 enum Num { ZERO=-000}
 {
     void entry(){}

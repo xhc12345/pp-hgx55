@@ -15,7 +15,7 @@ VOID: 'void';
 
 // constants
 Num_Const: '-'?[0-9]+;
-Char_Const: '\'' [a-zA-Z] '\'';
+Char_Const: '\''.'\'';
 Boolean_Const: 'true' | 'false';
 Type_Const: 'int' | 'char' | 'boolean';
 
@@ -44,20 +44,29 @@ project:
     '}' EOF;
 
 constDecl:
-    'const' Type_Const ID '=' 
-        (Num_Const | Char_Const | Boolean_Const)
-        (',' ID '='
-            (Num_Const | Char_Const | Boolean_Const)
+    'const' Type_Const
+        ID '=' (Num_Const | Char_Const | Boolean_Const)
+        (',' 
+            ID '=' (Num_Const | Char_Const | Boolean_Const)
         )*  // multiple const declarations in the same line
     ';';
 
 enumDecl:
     'enum' ID '{'
         ID ('=' Num_Const)?
-        (',' ID ('=' Num_Const)?)*
+        (','
+            ID ('=' Num_Const)?
+        )*
     '}';
 
-varDecl: 'var' ID ';';
+varDecl:
+    Type_Const
+        ID '[]'? 
+        (','
+            ID '[]'?
+        )*
+    ';';
+
 classDecl: 'class C implements I';
 interfaceDecl: 'interface I';
 methodDecl: 'void entry(){}';
