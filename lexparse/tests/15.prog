@@ -1,1 +1,8 @@
 project testing_1234
+var a;
+var b;
+const int a=5,c =-4, d= 3445;
+enum Num { ZERO=-000}
+{
+    void entry(){}
+}
