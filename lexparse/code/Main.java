@@ -9,7 +9,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.out.println("\n\n########################\nRunning semantic analyzer...\n########################");
+        System.out.println("\nRunning semantic analyzer...\n########################");
         System.out.println("Input: "+Arrays.toString(args));
         if(args.length!=1){
             System.out.println("No files to test");
@@ -18,7 +18,6 @@ public class Main {
         String inputPath = args[0];
         Path path = FileSystems.getDefault().getPath(inputPath);
         CharStream input = CharStreams.fromPath(path);
-        System.out.println("The input is:"+input);
         SimpleLangLexer lexer = new SimpleLangLexer(input);
         SimpleLangParser parser = new SimpleLangParser(new CommonTokenStream(lexer));
         ParseTree tree = parser.project();
