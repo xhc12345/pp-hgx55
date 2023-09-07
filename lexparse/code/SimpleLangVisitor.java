@@ -64,6 +64,12 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFormPars(SimpleLangParser.FormParsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SimpleLangParser#formPar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormPar(SimpleLangParser.FormParContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SimpleLangParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -97,6 +97,16 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitFormPars(SimpleLangParser.FormParsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#formPar}.
+	 * @param ctx the parse tree
+	 */
+	void enterFormPar(SimpleLangParser.FormParContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#formPar}.
+	 * @param ctx the parse tree
+	 */
+	void exitFormPar(SimpleLangParser.FormParContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#type}.
 	 * @param ctx the parse tree
 	 */

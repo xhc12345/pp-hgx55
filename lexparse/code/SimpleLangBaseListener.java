@@ -123,6 +123,18 @@ public class SimpleLangBaseListener implements SimpleLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFormPar(SimpleLangParser.FormParContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFormPar(SimpleLangParser.FormParContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterType(SimpleLangParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}

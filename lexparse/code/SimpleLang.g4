@@ -70,7 +70,8 @@ methodDecl:
         statement*
     '}';
 
-formPars: type ID ('['']')? (',' type ID ('['']')?)*;
+formPars: formPar (',' formPar)*;
+formPar: type ID ('['']')?;
 
 type: ID;
 
