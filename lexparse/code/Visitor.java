@@ -2,9 +2,21 @@ import java.util.*;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Visitor extends SimpleLangBaseVisitor<Integer> {
-    private Map<String, Integer> memory = new HashMap<>();
+class ID_Info{
+    String type;
+    boolean readOnly;   // for const
+    boolean isPrimative;    // int, char, boolean, enums
+    boolean isArray;
+    boolean isMethod;
+    Set<String> formParsFormats;
+    public ID_Info(){
+    }
+}
 
+public class Visitor extends SimpleLangBaseVisitor<Integer> { 
+    private Map<String, ID_Info> globalVars = new HashMap<>();
+    private Map<String, ID_Info> localVars;
+    // private Stack<Map<String, ID_Info>> localVarsStack = new Stack<Map<String, ID_Info>>();
 
     private void error(String msg){
         System.out.println(msg);
@@ -44,6 +56,8 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
     }
 
     @Override public Integer visitMethodDecl(SimpleLangParser.MethodDeclContext ctx) {
+        localVars = new HashMap<String, ID_Info>(); // new method means new set of local vars
+
         String methodName = ctx.ID().getText();
         Set<String> allValidID = new HashSet<String>();
         List<String> allMethodScopeID = new ArrayList<String>();
@@ -80,17 +94,7 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
     }
 
     @Override public Integer visitFormPars(SimpleLangParser.FormParsContext ctx) {
-        List<SimpleLangParser.FormParContext> allFormPars = ctx.formPar();
-        Set<String> allParID = new HashSet<String>();
-        for(SimpleLangParser.FormParContext par: allFormPars){
-            // check if any param is has duplicated names
-            String ID = par.ID().getText();
-            if(allParID.contains(ID)){
-                error("VAR ERROR: "+ID+" was declared");
-            } else{
-                allParID.add(ID);
-            }
-        }
+        
         return visitChildren(ctx);
     }
 
@@ -106,6 +110,23 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
     }
 
     @Override public Integer visitVarDecl(SimpleLangParser.VarDeclContext ctx) {
+        
+        return visitChildren(ctx);
+    }
+
+    @Override public Integer visitInterfaceMethodDecl(SimpleLangParser.InterfaceMethodDeclContext ctx) {
+        Set<String> allValidID = new HashSet<String>();
+        if(ctx.formPars()!=null){   // add all formPars ID to method scope
+            List<String> formParID = getFormParsID(ctx.formPars());
+            for(String ID: formParID){
+                // check each ID collected to see if any duplicated
+                if(allValidID.contains(ID)){
+                    error("VAR ERROR: "+ID+" was already declared");
+                } else{
+                    allValidID.add(ID);
+                }
+            }
+        }
         
         return visitChildren(ctx);
     }

@@ -1,0 +1,4 @@
+Name use error checking:
+    names need to be declared first
+    4 scopes to check: {global, class, method}
+        go in reverse order when chekcing scopes
