@@ -3,7 +3,7 @@ int a;
 char b;
 boolean c;
 const int d=5,e =-4, f= 3445;
-const char g='c' ,i=3;
+const char g='@' ,i=3;
 const boolean j=false, k=true;
 enum Num { ZERO=-000}
 

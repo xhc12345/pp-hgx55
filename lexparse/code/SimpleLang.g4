@@ -12,7 +12,6 @@ STRING: '"'[a-z]*'"';
 
 WHITE_SPACE:    [ \t\r\n] -> skip;
 COMMENT:        '//' ~[\r\n]* -> skip;
-OTHER:          .;
 
 // #####    parser  #####
 

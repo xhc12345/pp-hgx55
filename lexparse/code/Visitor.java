@@ -3,18 +3,27 @@ import java.util.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 class ID_Info{
-    String type;
-    boolean readOnly;   // for const
-    boolean isPrimative;    // int, char, boolean, enums
-    boolean isArray;
-    boolean isMethod;
+    String ID;
+    String type=null;
+    boolean readOnly=false;   // for const
+    boolean isPrimative=false;    // int, char, boolean, enums
+    boolean isArray=false,isMethod=false, isEnum=false,isClass=false,isInterface=false;
+    String returnType=null;  // only if isMethod
     Set<String> formParsFormats;
-    public ID_Info(){
+
+    static private Set<String> primatives = new HashSet<>(Arrays.asList("int", "char", "boolean", "enum"));
+    public ID_Info(String ID, String type, boolean constant, String info, String returnType){
+        this.ID = ID;
+        this.type = type;
+        this.readOnly = constant;
+        if(primatives.contains(type)) this.isPrimative = true;
+
     }
 }
 
 public class Visitor extends SimpleLangBaseVisitor<Integer> { 
-    private Map<String, ID_Info> globalVars = new HashMap<>();
+    private Map<String, ID_Info> globalVars = new HashMap<String, ID_Info>();
+    private Map<String, ID_Info> classes = new HashMap<String, ID_Info>();
     private Map<String, ID_Info> localVars;
     // private Stack<Map<String, ID_Info>> localVarsStack = new Stack<Map<String, ID_Info>>();
 
