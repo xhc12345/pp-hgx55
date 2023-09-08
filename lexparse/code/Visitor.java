@@ -316,7 +316,7 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         if(ctx.type()!=null){
             String type = ctx.type().ID().getText();
             if(!allClasses.containsKey(type) && !allInterfaces.containsKey(type)){
-                error("NAME USE ERROR: "+type+" not declared");
+                // error("NAME USE ERROR: "+type+" not declared");
             }
         }
         return visitChildren(ctx);

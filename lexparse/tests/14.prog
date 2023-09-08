@@ -1,4 +1,4 @@
-// No error (obfuscated, beautified)
+// Repeated implementation error
 project XXX
     const boolean xx = 10;
 
@@ -35,7 +35,7 @@ project XXX
         }
     }
 
-    class YYYYY implements N, M{}
+    class YYYYY implements N, N{}
 
     XXXXX v;
     {
