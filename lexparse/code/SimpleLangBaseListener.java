@@ -99,6 +99,18 @@ public class SimpleLangBaseListener implements SimpleLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterImplementations(SimpleLangParser.ImplementationsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitImplementations(SimpleLangParser.ImplementationsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInterfaceDecl(SimpleLangParser.InterfaceDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}

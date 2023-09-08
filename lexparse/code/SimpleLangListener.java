@@ -77,6 +77,16 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitClassDecl(SimpleLangParser.ClassDeclContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#implementations}.
+	 * @param ctx the parse tree
+	 */
+	void enterImplementations(SimpleLangParser.ImplementationsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#implementations}.
+	 * @param ctx the parse tree
+	 */
+	void exitImplementations(SimpleLangParser.ImplementationsContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#interfaceDecl}.
 	 * @param ctx the parse tree
 	 */

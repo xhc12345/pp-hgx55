@@ -52,6 +52,12 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassDecl(SimpleLangParser.ClassDeclContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SimpleLangParser#implementations}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImplementations(SimpleLangParser.ImplementationsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SimpleLangParser#interfaceDecl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

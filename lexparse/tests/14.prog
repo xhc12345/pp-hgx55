@@ -13,7 +13,11 @@ project XXX
         int fff(int i);
     }
 
-    class XXXXX implements N {
+    interface M{
+
+    }
+
+    class XXXXX implements M, N {
         int aaa[], aaaa[];
         {
             void gg(int a, int b) {
@@ -30,6 +34,8 @@ project XXX
             }
         }
     }
+
+    class YYYYY implements N, M{}
 
     XXXXX v;
     {

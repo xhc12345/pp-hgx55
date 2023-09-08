@@ -93,13 +93,14 @@ var: ID (LBRACKET RBRACKET)?;
 classDecl:
     CLASS ID
     (EXTENDS type)?
-    (IMPLEMENTS type (',' type)*)? 
+    (IMPLEMENTS implementations)? 
     '{'
         varDecl*
         ('{'
             methodDecl*
         '}')?
     '}';
+implementations: type (',' type)*;
 
 interfaceDecl:
     INTERFACE ID '{'

@@ -57,13 +57,21 @@ class Method_Info{
 class Class_Info{
     String ID;
     boolean isInterface=false;
-    Set<String> parentClasses;      // classes and their parents
-    Set<String> implementations;    // interfaces and their parents
-    Set<Method_Info> methods;       // methods available to this class
+    Set<String> parentClasses;          // classes and their parents
+    Set<String> implementations;        // interfaces and their parents
+    Map<String, Method_Info> methods;   // methods available to this class
     
-    public Class_Info(String ID, boolean isInterface){
+    public Class_Info(String ID, boolean isInterface, String parentClass){
         this.ID = ID;
         this.isInterface = isInterface;
+    }
+
+    public void addParent(String c){
+        parentClasses.add(c);
+    }
+
+    public void addInterface(Set<String> i){
+        implementations.addAll(i);
     }
 }
 
@@ -127,6 +135,31 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
 
 
         List<SimpleLangParser.ClassDeclContext> classes = ctx.classDecl();
+        for(SimpleLangParser.ClassDeclContext classDecl: classes){
+            String className = classDecl.ID().getText();
+            if(allClasses.containsKey(className)){
+                error("REPEATED CLASS ERROR: "+className);
+                continue;
+            }
+            String parentClass = classDecl.type()!=null? classDecl.type().getText(): null;
+            Set<String> implementations = null;
+            if(classDecl.implementations()!=null){
+                List<SimpleLangParser.TypeContext> impl = classDecl.implementations().type();
+                implementations = new HashSet<String>();
+                for(SimpleLangParser.TypeContext i: impl){
+                    String iName = i.ID().getText();
+                    if(implementations.contains(iName)){
+                        error("REPEATED INTERFACE ERROR: "+iName);
+                    } else {
+                        implementations.add(iName);
+                    }
+                }
+            }
+            Class_Info classAdv = new Class_Info(className, false, parentClass);
+            classAdv.addParent(parentClass);
+            classAdv.addInterface(implementations);
+            allClasses.put(className, classAdv);
+        }
 
         List<SimpleLangParser.InterfaceDeclContext> interfaces = ctx.interfaceDecl();
 
