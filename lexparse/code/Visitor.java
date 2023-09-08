@@ -69,36 +69,45 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         localVars = new HashMap<String, Var_Info>(); // new method means new set of local vars
 
         String methodName = ctx.ID().getText();
-        Set<String> allValidID = new HashSet<String>();
-        List<String> allMethodScopeID = new ArrayList<String>();
+        List<Var_Info> allMethodScopeID = new ArrayList<Var_Info>();
         if(ctx.formPars()!=null){   // add all formPars ID to method scope
-            List<String> formParID = getFormParsID(ctx.formPars());
-            allMethodScopeID.addAll(formParID);
+            List<Var_Info> formParVars = getFormParsVars(ctx.formPars());
+            allMethodScopeID.addAll(formParVars);
         }
         if(ctx.varDecl()!=null){    // add all varDecl ID to method scope
             for(SimpleLangParser.VarDeclContext var: ctx.varDecl()){
-                List<String> varDeclID = getVarDeclID(var);
-                allMethodScopeID.addAll(varDeclID);
+                List<Var_Info> varDeclVars = getVarDeclVars(var);
+                allMethodScopeID.addAll(varDeclVars);
             }
         }
-        for(String ID: allMethodScopeID){
+        for(Var_Info var: allMethodScopeID){
             // check each ID collected to see if any duplicated
-            if(allValidID.contains(ID)){
-                error("VAR ERROR: "+ID+" was already declared");
+            if(localVars.containsKey(var.ID)){
+                error("VAR ERROR: "+var.ID+" was already declared");
             } else{
-                allValidID.add(ID);
+                localVars.put(var.ID,var);
             }
         }
         return visitChildren(ctx);
     }
 
-    private List<String> getFormParsID(SimpleLangParser.FormParsContext target){
-        List<String> allID = new ArrayList<String>();
+    private List<String> varInfoListToIDList(List<Var_Info> input){
+        List<String> ret = new ArrayList<String>();
+        for(Var_Info var: input){
+            ret.add(var.ID);
+        }
+        return ret;
+    }
+
+    private List<Var_Info> getFormParsVars(SimpleLangParser.FormParsContext target){
+        List<Var_Info> allID = new ArrayList<Var_Info>();
         List<SimpleLangParser.FormParContext> allFormPars = target.formPar();
         for(SimpleLangParser.FormParContext par: allFormPars){
-            // add new ID into list
             String ID = par.ID().getText();
-            allID.add(ID);
+            String type = par.type().getText();
+            boolean isArray = par.LBRACKET()!=null;
+            Var_Info parInfo = new Var_Info(ID, type, false, isArray, false);
+            allID.add(parInfo);
         }
         return allID;
     }
@@ -108,16 +117,14 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         return visitChildren(ctx);
     }
 
-    private List<String> getVarDeclID(SimpleLangParser.VarDeclContext target){
-        List<String> allID = new ArrayList<String>();
+    private List<Var_Info> getVarDeclVars(SimpleLangParser.VarDeclContext target){
+        List<Var_Info> allID = new ArrayList<Var_Info>();
         List<SimpleLangParser.VarContext> allVar = target.var();
         String type = target.type().getText();
         for(SimpleLangParser.VarContext var: allVar){
-            String ID = var.getText();
-            allID.add(ID);// add new ID into list
+            String ID = var.ID().getText();
             Var_Info varInfo = new Var_Info(ID, type, false, false, false);
-            
-            
+            allID.add(varInfo);
         }
         return allID;
     }
@@ -130,13 +137,13 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
     @Override public Integer visitInterfaceMethodDecl(SimpleLangParser.InterfaceMethodDeclContext ctx) {
         Set<String> allValidID = new HashSet<String>();
         if(ctx.formPars()!=null){   // add all formPars ID to method scope
-            List<String> formParID = getFormParsID(ctx.formPars());
-            for(String ID: formParID){
+            List<Var_Info> formParID = getFormParsVars(ctx.formPars());
+            for(Var_Info var: formParID){
                 // check each ID collected to see if any duplicated
-                if(allValidID.contains(ID)){
-                    error("VAR ERROR: "+ID+" was already declared");
+                if(allValidID.contains(var.ID)){
+                    error("VAR ERROR: "+var.ID+" was already declared");
                 } else{
-                    allValidID.add(ID);
+                    allValidID.add(var.ID);
                 }
             }
         }
