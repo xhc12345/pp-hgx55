@@ -2,30 +2,31 @@ import java.util.*;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-class ID_Info{
+class Var_Info{
     String ID;
     String type=null;
     boolean readOnly=false;   // for const
     boolean isPrimative=false;    // int, char, boolean, enums
-    boolean isArray=false,isMethod=false, isEnum=false,isClass=false,isInterface=false;
-    String returnType=null;  // only if isMethod
-    Set<String> formParsFormats;
+    boolean isArray=false, isEnum=false;
+    // String returnType=null;  // only if isMethod
+    // Set<String> formParsFormats;    // overloading, comma-delim, eg "int,int,boolean" or "char,int,char"
 
     static private Set<String> primatives = new HashSet<>(Arrays.asList("int", "char", "boolean", "enum"));
-    public ID_Info(String ID, String type, boolean constant, String info, String returnType){
+    public Var_Info(String ID, String type, boolean constant, boolean isArray, boolean isEnum){
         this.ID = ID;
         this.type = type;
         this.readOnly = constant;
         if(primatives.contains(type)) this.isPrimative = true;
-
+        this.isArray = isArray;
+        this.isEnum = isEnum;
     }
 }
 
 public class Visitor extends SimpleLangBaseVisitor<Integer> { 
-    private Map<String, ID_Info> globalVars = new HashMap<String, ID_Info>();
-    private Map<String, ID_Info> classes = new HashMap<String, ID_Info>();
-    private Map<String, ID_Info> localVars;
-    // private Stack<Map<String, ID_Info>> localVarsStack = new Stack<Map<String, ID_Info>>();
+    private Map<String, Var_Info> globalVars = new HashMap<String, Var_Info>();
+    private Map<String, Var_Info> classes = new HashMap<String, Var_Info>();
+    private Map<String, Var_Info> localVars;
+    // private Stack<Map<String, Var_Info>> localVarsStack = new Stack<Map<String, Var_Info>>();
 
     private void error(String msg){
         System.out.println(msg);
@@ -65,7 +66,7 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
     }
 
     @Override public Integer visitMethodDecl(SimpleLangParser.MethodDeclContext ctx) {
-        localVars = new HashMap<String, ID_Info>(); // new method means new set of local vars
+        localVars = new HashMap<String, Var_Info>(); // new method means new set of local vars
 
         String methodName = ctx.ID().getText();
         Set<String> allValidID = new HashSet<String>();
@@ -109,11 +110,14 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
 
     private List<String> getVarDeclID(SimpleLangParser.VarDeclContext target){
         List<String> allID = new ArrayList<String>();
-        List<TerminalNode> allVar = target.ID();
-        for(TerminalNode var: allVar){
-            // add new ID into list
+        List<SimpleLangParser.VarContext> allVar = target.var();
+        String type = target.type().getText();
+        for(SimpleLangParser.VarContext var: allVar){
             String ID = var.getText();
-            allID.add(ID);
+            allID.add(ID);// add new ID into list
+            Var_Info varInfo = new Var_Info(ID, type, false, false, false);
+            
+            
         }
         return allID;
     }

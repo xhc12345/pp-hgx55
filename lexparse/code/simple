@@ -7,7 +7,7 @@
 cp="$(pwd)/../antlr-4.9.2-complete.jar"
 
 # lexing & parsing
-# java -Xmx500M -cp ${cp}:. org.antlr.v4.gui.TestRig SimpleLang project -tree $1
+java -Xmx500M -cp ${cp}:. org.antlr.v4.gui.TestRig SimpleLang project -tree $1
 
 # semantic analysis
-java -cp ${cp}:. Main $1
+# java -cp ${cp}:. Main $1
