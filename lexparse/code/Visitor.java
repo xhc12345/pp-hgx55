@@ -311,4 +311,15 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         
         return visitChildren(ctx);
     }
+
+    @Override public Integer visitFactor(SimpleLangParser.FactorContext ctx) {
+        if(ctx.type()!=null){
+            String type = ctx.type().ID().getText();
+            if(!allClasses.containsKey(type) && !allInterfaces.containsKey(type)){
+                error("NAME USE ERROR: "+type+" not declared");
+            }
+        }
+        return visitChildren(ctx);
+    }
+
 }
