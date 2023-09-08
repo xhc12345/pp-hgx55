@@ -61,9 +61,11 @@ class Class_Info{
     Set<String> implementations;        // interfaces and their parents
     Map<String, Method_Info> methods;   // methods available to this class
     
-    public Class_Info(String ID, boolean isInterface, String parentClass){
+    public Class_Info(String ID, boolean isInterface){
         this.ID = ID;
         this.isInterface = isInterface;
+        parentClasses = new HashSet<String>();
+        implementations = new HashSet<String>();
     }
 
     public void addParent(String c){
@@ -90,7 +92,6 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
 
     @Override public Integer visitProject(SimpleLangParser.ProjectContext ctx){
         String projectName = ctx.ID().getText();
-        System.out.println("project name is "+projectName);
 
         boolean hasEntry=false, voidEntry=false, noParamEntry=false;
         List<SimpleLangParser.MethodDeclContext> allMethods = ctx.methodDecl();
@@ -149,19 +150,28 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
                 for(SimpleLangParser.TypeContext i: impl){
                     String iName = i.ID().getText();
                     if(implementations.contains(iName)){
-                        error("REPEATED INTERFACE ERROR: "+iName);
+                        error("REPEATED IMPLEMENTS ERROR: "+iName);
                     } else {
                         implementations.add(iName);
                     }
                 }
             }
-            Class_Info classAdv = new Class_Info(className, false, parentClass);
+            Class_Info classAdv = new Class_Info(className, false);
             classAdv.addParent(parentClass);
             classAdv.addInterface(implementations);
             allClasses.put(className, classAdv);
         }
 
         List<SimpleLangParser.InterfaceDeclContext> interfaces = ctx.interfaceDecl();
+        for(SimpleLangParser.InterfaceDeclContext interf: interfaces){
+            String iName = interf.ID().getText();
+            if(allInterfaces.containsKey(iName)){
+                error("REPEATED INTERFACE ERROR: "+iName);
+                continue;
+            }
+            Class_Info interfAdv = new Class_Info(iName, true);
+            allInterfaces.put(iName, interfAdv);
+        }
 
         List<SimpleLangParser.MethodDeclContext> methods = ctx.methodDecl();
         for(SimpleLangParser.MethodDeclContext method: methods){
@@ -213,7 +223,6 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
 
     @Override public Integer visitClassDecl(SimpleLangParser.ClassDeclContext ctx) {
         String className = ctx.ID().getText();
-        System.out.println("class is "+className);
         return visitChildren(ctx);
     }
 

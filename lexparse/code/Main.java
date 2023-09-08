@@ -16,8 +16,6 @@ public class Main {
         // DEBUG ONLY
         // args = pathDebug;
 
-        System.out.println("\nRunning semantic analyzer...\n########################");
-        System.out.println("Input: "+Arrays.toString(args));
         if(args.length!=1){
             System.out.println("No files to test");
             return;
