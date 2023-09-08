@@ -1,6 +1,10 @@
 // NO var error (same name in different scopes)
 project NoVarError2
-    const int i = 0;
+    const int i = 0, j=2;
+    const int i=4;
+    char a, j;
+    char j;
+
 {
     int f(int i)
         int j;

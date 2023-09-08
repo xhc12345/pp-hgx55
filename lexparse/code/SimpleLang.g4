@@ -76,13 +76,8 @@ project:
         methodDecl*     // at least the void entry() method in semantic analyze
     '}' EOF;
 
-constDecl:
-    CONST type
-        ID ASSIGN (Num_Const | Char_Const | Boolean_Const)
-        (',' 
-            ID ASSIGN (Num_Const | Char_Const | Boolean_Const)
-        )*  // multiple const declarations in the same line
-    ';';
+constDecl: CONST type constAssign (',' constAssign)* ';';
+constAssign: ID ASSIGN (Num_Const | Char_Const | Boolean_Const);
 
 enumDecl:
     ENUM ID '{'

@@ -30,7 +30,7 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
 
     private void error(String msg){
         System.out.println(msg);
-        System.exit(0);
+        // System.exit(0);
     }
 
 
@@ -55,6 +55,51 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         if(!hasEntry || !voidEntry || !noParamEntry){
             error("ENTRY ERROR");
         }
+
+        List<Var_Info> allGlobalVar = new ArrayList<Var_Info>();
+        List<SimpleLangParser.ConstDeclContext> constants = ctx.constDecl();
+        for(SimpleLangParser.ConstDeclContext constDecl: constants){
+            allGlobalVar.addAll(getConstVars(constDecl));
+        }
+        List<SimpleLangParser.VarDeclContext> variables = ctx.varDecl();
+        for(SimpleLangParser.VarDeclContext varDecl: variables){
+            allGlobalVar.addAll(getVarDeclVars(varDecl));
+        }
+        List<SimpleLangParser.EnumDeclContext> enums = ctx.enumDecl();
+        for(SimpleLangParser.EnumDeclContext enumDecl: enums){
+            // TODO: collect all enums and convert to Var_Info
+        }
+
+        for(Var_Info var: allGlobalVar){
+            // check each ID collected to see if any duplicated
+            if(globalVars.containsKey(var.ID)){
+                error("VAR ERROR: "+var.ID+" was already declared");
+            } else{
+                globalVars.put(var.ID,var);
+            }
+        }
+
+
+        ctx.classDecl();
+
+        ctx.interfaceDecl();
+
+        return visitChildren(ctx);
+    }
+
+    private List<Var_Info> getConstVars(SimpleLangParser.ConstDeclContext target){
+        List<Var_Info> allID = new ArrayList<Var_Info>();
+        List<SimpleLangParser.ConstAssignContext> allConsts = target.constAssign();
+        String type = target.type().getText();
+        for(SimpleLangParser.ConstAssignContext k: allConsts){
+            String ID = k.ID().getText();
+            Var_Info kInfo = new Var_Info(ID, type, true, false, false);
+            allID.add(kInfo);
+        }
+        return allID;
+    }
+
+    @Override public Integer visitConstDecl(SimpleLangParser.ConstDeclContext ctx) {
 
         return visitChildren(ctx);
     }
