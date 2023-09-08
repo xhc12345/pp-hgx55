@@ -8,8 +8,6 @@ class Var_Info{
     boolean readOnly=false;   // for const
     boolean isPrimative=false;    // int, char, boolean, enums
     boolean isArray=false, isEnum=false;
-    // String returnType=null;  // only if isMethod
-    // Set<String> formParsFormats;    // overloading, comma-delim, eg "int,int,boolean" or "char,int,char"
 
     static private Set<String> primatives = new HashSet<>(Arrays.asList("int", "char", "boolean", "enum"));
     public Var_Info(String ID, String type, boolean constant, boolean isArray, boolean isEnum){
@@ -22,11 +20,59 @@ class Var_Info{
     }
 }
 
+class Method_Info{
+    String ID;
+    String returnType = "void";
+    // overloading, comma-delim, eg "int,int,boolean" or "char,int,char"
+    Set<String> formParsFormats = new HashSet<String>();
+
+    public Method_Info(String ID, String returnType){
+        this.ID = ID;
+        this.returnType = returnType;
+    }
+
+    public boolean overloadExists(String combo){
+        return formParsFormats.contains(combo);
+    }
+
+    public boolean overloadExists(String... types){
+        String combo = String.join(",",types);
+        return formParsFormats.contains(combo);
+    }
+
+    public void addOverload(String... types){
+        String combo = String.join(",",types);
+        if(!formParsFormats.contains(combo)){
+            formParsFormats.add(combo);
+        }
+    }
+
+    public void addOverload(String combo){
+        if(!formParsFormats.contains(combo)){
+            formParsFormats.add(combo);
+        }
+    }
+}
+
+class Class_Info{
+    String ID;
+    boolean isInterface=false;
+    Set<String> parentClasses;      // classes and their parents
+    Set<String> implementations;    // interfaces and their parents
+    Set<Method_Info> methods;       // methods available to this class
+    
+    public Class_Info(String ID, boolean isInterface){
+        this.ID = ID;
+        this.isInterface = isInterface;
+    }
+}
+
 public class Visitor extends SimpleLangBaseVisitor<Integer> { 
     private Map<String, Var_Info> globalVars = new HashMap<String, Var_Info>();
-    private Map<String, Var_Info> classes = new HashMap<String, Var_Info>();
     private Map<String, Var_Info> localVars;
-    // private Stack<Map<String, Var_Info>> localVarsStack = new Stack<Map<String, Var_Info>>();
+    private Map<String, Method_Info> staticMethods = new HashMap<String, Method_Info>();
+    private Map<String, Class_Info> allClasses = new HashMap<String, Class_Info>();
+    private Map<String, Class_Info> allInterfaces = new HashMap<String, Class_Info>();
 
     private void error(String msg){
         System.out.println(msg);
@@ -80,9 +126,37 @@ public class Visitor extends SimpleLangBaseVisitor<Integer> {
         }
 
 
-        ctx.classDecl();
+        List<SimpleLangParser.ClassDeclContext> classes = ctx.classDecl();
 
-        ctx.interfaceDecl();
+        List<SimpleLangParser.InterfaceDeclContext> interfaces = ctx.interfaceDecl();
+
+        List<SimpleLangParser.MethodDeclContext> methods = ctx.methodDecl();
+        for(SimpleLangParser.MethodDeclContext method: methods){
+            String type = method.type()!=null? method.type().getText() : "void";
+            String methodName = method.ID().getText();
+            String formParTypeCombo="";
+            if(method.formPars()!=null){
+                // combine the types in formPars
+                for(Var_Info formPar:getFormParsVars(method.formPars())){
+                    formParTypeCombo = String.join(",", formParTypeCombo, formPar.type);
+                }
+            }
+            if(staticMethods.containsKey(methodName)){
+                // check if this method declaration is overloading successfully
+                Method_Info targetMethod = staticMethods.get(methodName);
+                if(targetMethod.overloadExists(formParTypeCombo)){
+                    error("OVERLOADING ERROR: "+methodName+'('+formParTypeCombo+')'+" already declared");
+                } else {
+                    targetMethod.addOverload(formParTypeCombo);
+                }
+            } else {
+                // create new method and its form pars
+                Method_Info methodAdv = new Method_Info(methodName, type);
+                methodAdv.addOverload(formParTypeCombo);
+                staticMethods.put(methodName, methodAdv);
+            }
+            
+        }
 
         return visitChildren(ctx);
     }
