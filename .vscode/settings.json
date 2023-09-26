@@ -2,5 +2,9 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "lexparse/antlr-4.9.2-complete.jar"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
 }
