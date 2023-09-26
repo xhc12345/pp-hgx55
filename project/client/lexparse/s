@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+set -e
+
+if [ ! -e antlr-4.13.0-complete.jar ]; then
+        curl -O https://www.antlr.org/download/antlr-4.13.0-complete.jar
+fi
+
+cp="$(pwd)/antlr-4.13.0-complete.jar"
+out="$(pwd)/build"
+# test="$(pwd)/tests/1.prog"
+
+# if ! java --version |& grep 'java 11' > /dev/null; then
+#         echo "ERROR: Please use Oracle Java 11 (https://www.oracle.com/java/technologies/downloads)"
+#         exit 1
+# fi
+
+echo "Processing grammar ..."
+( 
+  java -Xmx500M -cp ${cp} org.antlr.v4.Tool -Dlanguage=Cpp -no-listener -visitor -o ${out} Cypher.g4 )
