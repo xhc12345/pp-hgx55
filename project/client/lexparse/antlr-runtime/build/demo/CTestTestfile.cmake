@@ -1,0 +1,6 @@
+# CMake generated Testfile for 
+# Source directory: /mnt/c/Users/kevin/OneDrive/Documents/UT/Fa2023/ECE379K/Project/pp-hgx55/project/client/lexparse/antlr-runtime/demo
+# Build directory: /mnt/c/Users/kevin/OneDrive/Documents/UT/Fa2023/ECE379K/Project/pp-hgx55/project/client/lexparse/antlr-runtime/build/demo
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
