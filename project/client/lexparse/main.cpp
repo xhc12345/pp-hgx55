@@ -8,9 +8,9 @@
 
 #include <iostream>
 
-#include "CypherLexer.h"
-#include "CypherParser.h"
-#include "antlr4-runtime.h"
+#include "build/CypherLexer.h"
+#include "build/CypherParser.h"
+#include "runtime/src/antlr4-runtime.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -19,12 +19,14 @@ using namespace antlr4;
 
 int main(int argc, const char* argv[]) {
   ANTLRInputStream input(
-      "a = b + \"c\";(((x * d))) * e + f; a + (x * (y ? 0 : 1) + z);");
+      "MATCH (tom:Person {name:\'Tom Hanks\'})-[rel:DIRECTED]-(movie:Movie)\n "
+      "RETURN tom.name AS name, tom.born AS \'Year Born\', movie.title AS "
+      "title, movie.released AS \'Year Released\'");
   CypherLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
 
   CypherParser parser(&tokens);
-  tree::ParseTree* tree = parser.main();
+  tree::ParseTree* tree = parser.oC_Cypher();
 
   auto s = tree->toStringTree(&parser);
   std::cout << "Parse Tree: " << s << std::endl;

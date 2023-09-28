@@ -3,9 +3,11 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/project/client/lexparse/build"
             ],
-            "defines": []
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc"
         }
     ],
     "version": 4
