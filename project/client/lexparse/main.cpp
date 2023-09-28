@@ -8,9 +8,9 @@
 
 #include <iostream>
 
+#include "antlr4-runtime.h"
 #include "build/CypherLexer.h"
 #include "build/CypherParser.h"
-#include "runtime/src/antlr4-runtime.h"
 
 #pragma execution_character_set("utf-8")
 
