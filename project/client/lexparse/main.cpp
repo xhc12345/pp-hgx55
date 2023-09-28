@@ -12,8 +12,6 @@
 #include "TParser.h"
 #include "antlr4-runtime.h"
 
-#pragma execution_character_set("utf-8")
-
 using namespace antlrcpptest;
 using namespace antlr4;
 
@@ -22,6 +20,10 @@ int main(int argc, const char* argv[]) {
       "a = b + \"c\";(((x * d))) * e + f; a + (x * (y ? 0 : 1) + z);");
   TLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
+  // tokens.fill();
+  // for (auto token : tokens.getTokens()) {
+  //   std::cout << token->toString() << std::endl;
+  // }
 
   TParser parser(&tokens);
   tree::ParseTree* tree = parser.main();
