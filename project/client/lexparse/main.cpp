@@ -1,33 +1,67 @@
-/**
- * @file    main.cpp
- * @brief   program entry for Cypher semantic analyzer program
- *          initial version using demo from ANTLR GitHub to test setup
- * @version 0.1
- * @date    2023-09-20
- */
-
 #include <iostream>
 
-#include "CypherLexer.h"
-#include "CypherParser.h"
+#include "Visitor.h"
 #include "antlr4-runtime.h"
+#include "libs/CypherLexer.h"
+#include "libs/CypherParser.h"
 
-#pragma execution_character_set("utf-8")
-
-using namespace antlrcpptest;
+using namespace std;
 using namespace antlr4;
 
+class LexerErrorListener : public antlr4::BaseErrorListener {
+ public:
+  virtual void syntaxError(antlr4::Recognizer* recognizer,
+                           antlr4::Token* offendingSymbol,
+                           size_t line,
+                           size_t charPositionInLine,
+                           const std::string& msg,
+                           std::exception_ptr e) override {
+    std::cerr << "Lexer Error at line " << line << ":" << charPositionInLine
+              << " - " << msg << std::endl;
+  }
+};
+
+class ParserErrorListener : public antlr4::BaseErrorListener {
+ public:
+  virtual void syntaxError(antlr4::Recognizer* recognizer,
+                           antlr4::Token* offendingSymbol,
+                           size_t line,
+                           size_t charPositionInLine,
+                           const std::string& msg,
+                           std::exception_ptr e) override {
+    std::cerr << "Parser Error at line " << line << ":" << charPositionInLine
+              << " - " << msg << std::endl;
+  }
+};
+
 int main(int argc, const char* argv[]) {
-  ANTLRInputStream input(
-      "a = b + \"c\";(((x * d))) * e + f; a + (x * (y ? 0 : 1) + z);");
+  // std::cout << "Running Cypher Lexer and Parser..." << std::endl;
+
+  std::ifstream stream;
+  stream.open("input.cql");
+
+  ANTLRInputStream input(stream);
+  // std::cout << "Fetched input, generating lexer..." << std::endl;
   CypherLexer lexer(&input);
+  lexer.removeErrorListeners();
+  lexer.addErrorListener(new LexerErrorListener());
+  // std::cout << "Lexer generated, creating tokens..." << std::endl;
   CommonTokenStream tokens(&lexer);
 
+  // std::cout << "Tokens created, generating parser..." << std::endl;
   CypherParser parser(&tokens);
-  tree::ParseTree* tree = parser.main();
+  parser.removeErrorListeners();
+  parser.addErrorListener(new ParserErrorListener());
+  // std::cout << "Parser generated, creating AST..." << std::endl;
+  CypherParser::OC_CypherContext* tree = parser.oC_Cypher();
 
+  // std::cout << "AST created, printing..." << std::endl;
   auto s = tree->toStringTree(&parser);
   std::cout << "Parse Tree: " << s << std::endl;
+
+  // std::cout << "Start visiting tree..." << s << std::endl;
+  Visitor visitor;
+  visitor.visit(tree);
 
   return 0;
 }
