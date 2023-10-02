@@ -42,7 +42,7 @@ class Shell:
                 print(self.commandHistory[-10:])
 
             elif cmdType == "path":
-                if len(tokens) != 2:
+                if len(tokens) != 2 or len(tokens[1]) == 0:
                     self.__ERROR("path command must have 1 and only 1 argument")
                     continue
                 path: str = tokens[1]
