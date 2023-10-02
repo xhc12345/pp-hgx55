@@ -367,6 +367,7 @@ CTestTestfile.cmake
 *.jar
 
 # Project-specific
+.antlr
 build/
 antlr4-runtime/Cypher*
 libs/Cypher.interp
