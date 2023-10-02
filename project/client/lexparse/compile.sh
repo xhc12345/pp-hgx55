@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# create a build directory to keep the main one clean
+# make sure everything done is relative to the location of the script
+# and not where it's launched
+dir=$(dirname "$0")
+cd $dir
 
 mkdir tools
 cd tools
@@ -11,7 +14,7 @@ fi
 cd ..
 
 mkdir libs
-
+# create a build directory to keep the main one clean
 mkdir build
 cd build
 # to run CMake
