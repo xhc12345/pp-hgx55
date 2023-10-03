@@ -1,1 +1,1 @@
-Parser Error at line 2:108 - mismatched input '<EOF>' expecting {OPTIONAL, MATCH, UNWIND, MERGE, CREATE, SET, DETACH, DELETE, REMOVE, CALL, WITH, RETURN}
+Parser Error at line 2:50 - no viable alternative at input 'MATCH (tom:Person {name:'Tom Hanks'})-[rel:DIRovie:'
