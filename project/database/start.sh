@@ -1,7 +1,8 @@
 #!bin/bash
 
 ./setup.sh
+sleep 5s
 
-./cypherShell.sh
+python3 cypherShell.py
 
-# ./cleanUp.sh
+./cleanUp.sh

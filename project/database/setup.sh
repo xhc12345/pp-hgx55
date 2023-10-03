@@ -3,6 +3,10 @@
 dir=$(dirname "$0")
 cd $dir
 
+mkdir -p data/server1
+mkdir -p logs/server1
+mkdir -p import/server1
+
 export USER_ID="$(id -u)"
 export GROUP_ID="$(id -g)"
 
@@ -32,13 +36,7 @@ docker run --name=server1 --detach --network=neo4j-cluster \
     --env NEO4J_AUTH=neo4j/password \
     neo4j:4.4.26-community
 
-echo "Starting cypher-shell"
-
-# docker exec -it server1 bash
-# docker exec -it server1 bash < cypherShell.sh
-# docker exec -it server1 bash -c "cypher-shell -u neo4j -p password"
-
-# cypher-shell -u neo4j -p password
+echo "Starting cypher-shell, there may be around 5 seconds of wait"
 
 
 
