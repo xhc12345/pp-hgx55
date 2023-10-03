@@ -370,15 +370,15 @@ CTestTestfile.cmake
 .antlr
 build/
 antlr4-runtime/Cypher*
-libs/Cypher.interp
-libs/Cypher.tokens
-libs/CypherBaseVisitor.cpp
-libs/CypherBaseVisitor.h
-libs/CypherLexer.cpp
-libs/CypherLexer.h
-libs/CypherLexer.interp
-libs/CypherLexer.tokens
-libs/CypherParser.cpp
-libs/CypherParser.h
-libs/CypherVisitor.cpp
-libs/CypherVisitor.h
+# libs/Cypher.interp
+# libs/Cypher.tokens
+# libs/CypherBaseVisitor.cpp
+# libs/CypherBaseVisitor.h
+# libs/CypherLexer.cpp
+# libs/CypherLexer.h
+# libs/CypherLexer.interp
+# libs/CypherLexer.tokens
+# libs/CypherParser.cpp
+# libs/CypherParser.h
+# libs/CypherVisitor.cpp
+# libs/CypherVisitor.h

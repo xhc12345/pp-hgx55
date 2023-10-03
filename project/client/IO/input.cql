@@ -1,1 +1,1 @@
-HELLO WORLD
+MATCH (tom:Person {name:'Tom Hanks'})-[rel:DIRECTED]-(movie:Movie) RETURN tom.name AS name,

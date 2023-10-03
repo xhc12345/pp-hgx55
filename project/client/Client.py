@@ -1,7 +1,7 @@
-try:
-    from gui import Client
-except ModuleNotFoundError:
-    print("Please install TKinter")
+# try:
+#     from gui import Client
+# except ModuleNotFoundError:
+#     print("Please install TKinter")
 
 from cli import Shell
 
