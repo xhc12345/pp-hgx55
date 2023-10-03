@@ -1,6 +1,6 @@
 # Lexer and Parser for Cypher in C++
 
-**before running the first time, first compile the project:**
+**if running apart from Client, then compile the project before running the first time:**
 
 cd into this folder (`hgx55-pp/project/client/lexparse`), then run
 
@@ -20,3 +20,4 @@ or by running the bash file
 ```bash
 ./run.sh
 ```
+If you run the program via bash, then the output are available at `hgx55-pp/project/client/IO` as `stdout.txt` and `stderr.txt`.
