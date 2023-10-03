@@ -46,7 +46,7 @@ add_executable(cypher-parser.exe main.cpp Visitor.cpp ${ANTLR_CypherGrammarParse
 target_link_libraries(cypher-parser.exe antlr4_static ${SYSTEM_LIBS})
 
 # copy the input file next to the generated executable
-add_custom_command(TARGET cypher-parser.exe POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different
-  "${PROJECT_SOURCE_DIR}/input.cql"
-  $<TARGET_FILE_DIR:cypher-parser.exe>)
+# add_custom_command(TARGET cypher-parser.exe POST_BUILD
+#   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#   "${PROJECT_SOURCE_DIR}/input.cql"
+#   $<TARGET_FILE_DIR:cypher-parser.exe>)

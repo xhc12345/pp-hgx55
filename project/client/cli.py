@@ -46,13 +46,7 @@ class Shell:
                     self.__ERROR("path command must have 1 and only 1 argument")
                     continue
                 path: str = tokens[1]
-                print("taking input from path=" + path)
-                try:
-                    fp = open(path, "r")
-                    print("\n" + fp.read())
-                    fp.close()
-                except FileNotFoundError:
-                    self.__ERROR("path not found: " + path)
+                self.__path(path)
 
             else:
                 print("\nUnsupported input" + cmd)
@@ -60,13 +54,47 @@ class Shell:
 
             self.commandHistory.append(cmd)
 
+    def __path(self, path: str):
+        print("taking input from path=" + path)
+        content: str = None
+
+        try:
+            fp = open(path, "r")
+            content = fp.read()
+            print("\n" + content)
+            fp.close()
+        except FileNotFoundError:
+            self.__ERROR("path not found: " + path)
+
+        if content:
+            success = self.__write_to_IO(input=content)
+            if success:
+                # TODO: launch lexparse and check IO/stderr.txt
+                pass
+
+    def __start_lexparse(self):
+        pass
+
+    def __write_to_IO(self, input: str, path: str = "IO/input.cql") -> bool:
+        try:
+            fp = open(path, "w")
+            print("writing\n" + input + "\nto " + path)
+            fp.write(input)
+            fp.close()
+            return True
+        except FileNotFoundError:
+            self.__ERROR("path not found: " + path)
+            return False
+
     def __ERROR(self, msg: str):
         print("ERROR: " + msg, file=sys.stderr)
 
     def __SHOW_HELP(self):
         print("available commands:")
         print("- path <path_to_cql_or_txt_file>")
-        print("\tpoints the input for client to a cql or txt file")
+        print(
+            "\tpoints the input for client to a cql or txt file (no white space allowed)"
+        )
         print("- cql <cypher_query>")
         print("\tgives the client the query to process directly")
         print("- exit")

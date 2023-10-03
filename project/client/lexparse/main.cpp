@@ -38,7 +38,7 @@ int main(int argc, const char* argv[]) {
   // std::cout << "Running Cypher Lexer and Parser..." << std::endl;
 
   std::ifstream stream;
-  stream.open("input.cql");
+  stream.open("../IO/input.cql");
 
   ANTLRInputStream input(stream);
   // std::cout << "Fetched input, generating lexer..." << std::endl;

@@ -13,10 +13,13 @@ if [ ! -e antlr-4.13.1-complete.jar ]; then
 fi
 cd ..
 
+set +e
 mkdir libs
 # create a build directory to keep the main one clean
 mkdir build
 cd build
+
+set -e
 # to run CMake
 cmake ../
 # to build on Linux and Mac

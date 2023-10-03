@@ -2,4 +2,4 @@
 
 dir=$(dirname "$0")
 cd $dir
-./build/cypher-parser.exe
+./build/cypher-parser.exe 2> ../IO/stderr.txt
