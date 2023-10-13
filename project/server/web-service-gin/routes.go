@@ -33,11 +33,27 @@ func runCqlCmd(c *gin.Context) {
 			"success": false,
 			"message": "no request body",
 		})
+		return
+	}
+	fmt.Println("\tBODY REQUEST:\n" + cmd)
+
+	if sendQueryToDB(cmd) {
+		hasError, content := responseHasError()
+		if !hasError {
+			c.IndentedJSON(http.StatusOK, gin.H{
+				"success": true,
+				"message": content,
+			})
+		} else {
+			c.IndentedJSON(http.StatusBadRequest, gin.H{
+				"success": false,
+				"message": content,
+			})
+		}
 	} else {
-		fmt.Println("\tBODY REQUEST:\n" + string(bodyData))
-		c.IndentedJSON(http.StatusOK, gin.H{
-			"success": true,
-			"message": "found request body = " + cmd,
+		c.IndentedJSON(http.StatusBadRequest, gin.H{
+			"success": false,
+			"message": "A problem occurred when the server is communicating with database",
 		})
 	}
 }

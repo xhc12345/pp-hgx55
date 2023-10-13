@@ -1,2 +1,1 @@
-MATCH (p:Person{name:'tom'})-[r:Rel]-(r:Movie)
-RETURN p, r, m
+MATCH (p:Person{name:'tom'})-[r:Rel]-(m:Movie) RETURN p, r, m

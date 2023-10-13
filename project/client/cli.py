@@ -5,7 +5,7 @@ import request
 
 class Shell:
     def __init__(self) -> None:
-        self.cmdHeader: str = "$: "
+        self.cmdHeader: str = "_______________________\n"+"$: "
         self.commandHistory: list[str] = []
         self.serverActive: bool = False
 
@@ -16,10 +16,11 @@ class Shell:
 
         # print("||              INITIALIZAED              ||")
         # print("============================================")
-
-        self.__SHOW_HELP()
-
         self.serverActive = request.ping_server()
+        if not self.serverActive:
+            print("No server connection, are you sure what you are doing is sane?")
+        
+        self.__SHOW_HELP()
 
         while True:
             try:
@@ -65,7 +66,6 @@ class Shell:
                 continue
 
             self.commandHistory.append(cmd)
-            print()
 
     def __path(self, path: str):
         # print("taking input from path=" + path)

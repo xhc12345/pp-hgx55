@@ -1,3 +1,1 @@
-// error with return
-MATCH (tom:Person {name:'Tom Hanks'})-[rel:DIRECTED]-(movie:Movie)
-RETURN
+MATCH (p:Person{name:'tom'})-[r:Rel]-(m:Movie) RETURN p, r, m

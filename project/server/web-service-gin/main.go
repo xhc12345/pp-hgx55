@@ -10,8 +10,8 @@ const QUERY string = "MATCH (p:Person{name:'tom'})-[r:Rel]-(r:Movie)\r\nRETURN p
 
 func main() {
 	fmt.Println("### SERVER IS RUNNING ##")
-	sendQueryToDB(QUERY)
-	// start()
+	// sendQueryToDB(QUERY)
+	start()
 }
 
 func start() {

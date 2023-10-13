@@ -1,3 +1,7 @@
-[31mType mismatch: r defined with conflicting type Relationship (expected Node) (line 1, column 39 (offset: 38))
-"MATCH (p:Person{name:'tom'})-[r:Rel]-(r:Movie)"
-                                       ^[m
++-----------+
+| p | r | m |
++-----------+
++-----------+
+
+0 rows
+ready to start consuming query after 1 ms, results consumed after another 0 ms

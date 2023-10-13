@@ -8,14 +8,16 @@ import (
 )
 
 func sendQueryToDB(query string) bool {
-	writeInput(query)
+	if !writeInput(query) {
+		return false
+	}
 	fmt.Println("Sending command to Neo4j Cypher Shell")
 	cmd := exec.Command("./runQuery.sh")
 	err := cmd.Run()
 	if err != nil {
+		fmt.Println(err)
 		return false
 	}
-	checkResponseForError()
 	return true
 }
 
@@ -31,22 +33,21 @@ func writeInput(query string) bool {
 	return true
 }
 
-func checkResponseForError() bool {
+func responseHasError() (bool, string) {
 	b, err := os.ReadFile("IO/out.txt")
 	if err != nil {
-		fmt.Println("Failed to find out.txt:", err)
-		return false
+		return true, "Failed to find output file from db:" + err.Error()
 	}
 	output := string(b)
 	const ESC string = "\x1b" // \x1b === 
 	isError := strings.Contains(output, ESC)
 	if isError {
-		fmt.Println("IO/out.txt contains error:")
-		fmt.Println(output)
-		return false
+		// fmt.Println("IO/out.txt contains error:")
+		// fmt.Println(output)
+		return true, output
 	} else {
-		fmt.Println("IO/out.txt doesn't have error")
-		fmt.Println(output)
-		return true
+		// fmt.Println("IO/out.txt doesn't have error")
+		// fmt.Println(output)
+		return false, output
 	}
 }

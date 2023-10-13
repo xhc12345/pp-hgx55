@@ -1,1 +1,0 @@
-Parser Error at line 3:6 - mismatched input '<EOF>' expecting {DISTINCT, SP}

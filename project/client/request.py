@@ -27,9 +27,9 @@ def send_cql_cmd(query:str):
     print("sending cypher query to server")
     statusCode, success, message = __POST('/run', query)
     if statusCode == STATUS_BAD_REQUEST or not success:
-        __ERROR("Problem with input: "+message)
+        __ERROR("Problem with the entry:\n"+message)
     else:
-        print("Success: "+message)
+        print("Success:\n"+message)
     
 
 def __GET(route:str) -> Tuple[int, bool, str]:
@@ -41,8 +41,8 @@ def __GET(route:str) -> Tuple[int, bool, str]:
         return NO_CONNECTION, False, None
     # response:requests.Response = requests.get(target)
     code:int = response.status_code
-    if code!=STATUS_OK:
-        return code, False, None
+    # if code!=STATUS_OK:
+    #     return code, False, None
     responseBody:dict = response.json()
     success:bool = responseBody.get('success')
     message:str = responseBody.get('message')
@@ -53,12 +53,12 @@ def __POST(route:str, body:str) -> Tuple[int, bool, str]:
     target = URL+route
     response:requests.Response = requests.post(target, data=body)
     code:int = response.status_code
-    if code!=STATUS_OK:
-        return code, False, None
+    # if code!=STATUS_OK:
+    #     return code, False, None
     responseBody:dict = response.json()
     success:bool = responseBody.get('success')
     message:str = responseBody.get('message')
     return code, success, message
 
 def __ERROR(msg:str):
-    print("REQUEST ERROR: " + msg, file=sys.stderr)
+    print("REQUEST ERROR:", msg, file=sys.stderr)
