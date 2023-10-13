@@ -1,2 +1,3 @@
-// error with lexer
-MATCH (tom:Person {name:'Tom Hanks'})-[rel:DIRovie:Movie) RETURN tom
+// error with return
+MATCH (tom:Person {name:'Tom Hanks'})-[rel:DIRECTED]-(movie:Movie)
+RETURN

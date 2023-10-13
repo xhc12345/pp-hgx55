@@ -1,11 +1,13 @@
 import sys
 import subprocess
+import request
 
 
 class Shell:
     def __init__(self) -> None:
         self.cmdHeader: str = "$: "
         self.commandHistory: list[str] = []
+        self.serverActive: bool = False
 
     def start(self):
         print("============================================")
@@ -16,6 +18,8 @@ class Shell:
         # print("============================================")
 
         self.__SHOW_HELP()
+
+        self.serverActive = request.ping_server()
 
         while True:
             try:
@@ -61,6 +65,7 @@ class Shell:
                 continue
 
             self.commandHistory.append(cmd)
+            print()
 
     def __path(self, path: str):
         # print("taking input from path=" + path)
@@ -83,7 +88,8 @@ class Shell:
         if len(stderr):
             print(stderr, file=sys.stderr)
         else:
-            print("Input is valid\n")
+            print("Input is valid")
+            request.send_cql_cmd(content)
 
     def __cql(self, query: str):
         success = self.__write_to_IO(input=query)
@@ -94,7 +100,8 @@ class Shell:
         if len(stderr):
             print(stderr, file=sys.stderr)
         else:
-            print("Input is valid\n")
+            print("Input is valid")
+            request.send_cql_cmd(query)
 
     def __write_to_IO(self, input: str, path: str = "IO/input.cql") -> bool:
         try:
