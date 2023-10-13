@@ -6,8 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const QUERY string = "MATCH (p:Person{name:'tom'})-[r:Rel]-(r:Movie)\r\nRETURN p, r, m"
+
 func main() {
 	fmt.Println("### SERVER IS RUNNING ##")
+	sendQueryToDB(QUERY)
+	// start()
+}
+
+func start() {
 	router := gin.Default()
 	router.GET("/ping", ping)
 	router.POST("/run", runCqlCmd)

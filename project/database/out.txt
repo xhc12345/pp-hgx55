@@ -1,3 +1,0 @@
-[31mType mismatch: p defined with conflicting type Node (expected Relationship) (line 1, column 19 (offset: 18))
-"MATCH (p:Person)-[p:DIRECTED]-(p:Movie)"
-                   ^[m
