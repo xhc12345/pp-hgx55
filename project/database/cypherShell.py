@@ -14,6 +14,7 @@ ret: subprocess.CompletedProcess = subprocess.run(
         "neo4j",
         "-p",
         "password",
+        "MATCH (p:Person)-[p:DIRECTED]-(p:Movie)\r\nRETURN p;",
     ],
     # capture_output=True,
 )
