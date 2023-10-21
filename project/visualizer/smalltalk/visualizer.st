@@ -1,5 +1,5 @@
 "Change this file to desired path of the JSON file"
-fileName := '../input/graph1.json'.
+fileName := 'input/graph1.json'.
 fileName asFileReference readStreamDo: [ :readStream |
 	data := STONJSON fromStream: readStream
 ].

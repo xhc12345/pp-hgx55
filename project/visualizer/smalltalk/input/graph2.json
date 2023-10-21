@@ -1,0 +1,117 @@
+{
+    "nodes":{
+        "1":{
+            "text":"Person",
+            "info":"{name: 'Alexia Midgar'}"
+        },
+        "2":{
+            "text":"Person",
+            "info":"{name: 'Beta'}"
+        },
+        "3":{
+            "text":"Person",
+            "info":"{name: 'Cid Kagenou'}"
+        },
+        "4":{
+            "text":"Organization",
+            "info":"{name: 'Midgar Academy'}"
+        },
+        "5":{
+            "text":"Organization",
+            "info":"{name: 'Shadow Garden'}"
+        },
+        "6":{
+            "text":"Organization",
+            "info":"{name: 'Midgar Royalty'}"
+        },
+        "7":{
+            "text":"Origin",
+            "info":"{name: 'Midgar Kingdom'}"
+        },
+        "8":{
+            "text":"RANDOM_1",
+            "info":"{UH: 'UHHHH'}"
+        },
+        "9":{
+            "text":"RANDOM_2",
+            "info":"{MM: 'MMMMMMM}"
+        }
+    },
+    "edges":{
+        "1":{
+            "text":"Loves",
+            "source":"1",
+            "target":"3"
+        },
+        "2":{
+            "text":"Loves",
+            "source":"2",
+            "target":"3"
+        },
+        "3":{
+            "text":"Hates",
+            "source":"1",
+            "target":"2"
+        },
+        "4":{
+            "text":"Hates",
+            "source":"2",
+            "target":"1"
+        },
+        "5":{
+            "text":"Subordinate of",
+            "source":"2",
+            "target":"3"
+        },
+        "6":{
+            "text":"Belongs to",
+            "source":"5",
+            "target":"3"
+        },
+        "7":{
+            "text":"Works at",
+            "source":"2",
+            "target":"5"
+        },
+        "8":{
+            "text":"Part of",
+            "source":"1",
+            "target":"6"
+        },
+        "9":{
+            "text":"Established",
+            "source":"6",
+            "target":"4"
+        },
+        "10":{
+            "text":"Despise",
+            "source":"6",
+            "target":"5"
+        },
+        "11":{
+            "text":"Studies at",
+            "source":"1",
+            "target":"4"
+        },
+        "12":{
+            "text":"Studies at",
+            "source":"3",
+            "target":"4"
+        },
+        "13":{
+            "text":"Based in",
+            "source":"4",
+            "target":"7"
+        },
+        "14":{
+            "text":"Based in",
+            "source":"5",
+            "target":"7"
+        },
+        "15":{
+            "text":"Based in",
+            "source":"6",
+            "target":"7"
+        }
+    }
+}
