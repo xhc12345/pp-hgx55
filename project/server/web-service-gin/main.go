@@ -14,10 +14,15 @@ func main() {
 	start()
 }
 
-func start() {
+func setupRouter() *gin.Engine {
 	router := gin.Default()
 	router.GET("/ping", ping)
 	router.POST("/run", runCqlCmd)
+	return router
+}
+
+func start() {
+	router := setupRouter()
 	// router.GET("/albums", getAlbums)
 	// router.GET("/albums/:id", getAlbumByID)
 	// router.POST("/albums", postAlbums)
