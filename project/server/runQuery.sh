@@ -5,6 +5,8 @@ cd $dir
 
 # ./../../database/runCypherShell.sh
 
+echo "Sending command to Neo4j Cypher Shell"
+
 input=$(cat IO/in.cql)
 echo $input
 

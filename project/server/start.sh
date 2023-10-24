@@ -7,6 +7,7 @@ cd $dir
 ./../database/setup.sh
 
 # start the server
+# sleep 5s
 ./initServer.sh
 
 # clean up the database too

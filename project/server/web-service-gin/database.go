@@ -11,7 +11,6 @@ func sendQueryToDB(query string) bool {
 	if !writeInput(query) {
 		return false
 	}
-	fmt.Println("Sending command to Neo4j Cypher Shell")
 	cmd := exec.Command("./runQuery.sh")
 	err := cmd.Run()
 	if err != nil {
