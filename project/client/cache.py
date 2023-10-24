@@ -51,7 +51,8 @@ class cacheDB:
 
         """
         response: responseObj = None
-        # TODO: get matching row item corresponding to query from the SQL table
+        # TODO: test this function
+        response = self.db_fetch_row(query)
         return response
     
     def put_query_reponse(self, query: str, response: responseObj) -> bool:
@@ -71,10 +72,13 @@ class cacheDB:
             print("This command and its response can't be cached")
             return False
         operationCompleted: bool = False
-        # TODO: put/update target query and its response in the SQL table
+        # TODO: test this function
+        self.db_insert_row(query, response)
+        operationCompleted = True
         return operationCompleted
     
-    def fetch_row(self, query:str) -> responseObj:
+    def db_fetch_row(self, query:str) -> responseObj:
+        # get matching row item corresponding to query from the SQL table
         cursor = self.connection.cursor()
         # Execute a SELECT statement to fetch the row
         cursor.execute(f'SELECT * FROM {self.tabelName} WHERE query = ?', (query,))
@@ -89,7 +93,8 @@ class cacheDB:
             print("Query not found in cache:", query)
             return None
         
-    def insert_row(self, query:str, response:responseObj):
+    def db_insert_row(self, query:str, response:responseObj):
+        # put/update target query and its response in the SQL table
         cursor = self.connection.cursor()
 
         # Check if the query exists
@@ -118,7 +123,7 @@ class cacheDB:
 
         self.connection.commit()
     
-    def __is_cacheable(query: str, response: responseObj) -> bool:
+    def __is_cacheable(self, query: str, response: responseObj) -> bool:
         """Checks if query contains commands that modifies the graph. If true then query non-cacheable.
         Additionally, if reponse.clearCache is true then the query is automatically non-cacheable
 
