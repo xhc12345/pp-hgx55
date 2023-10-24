@@ -1,0 +1,1 @@
+This folder contains the `clientCache.db` file which is the actual SQLite3 database. It is gitignore'd.

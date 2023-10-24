@@ -81,7 +81,7 @@ class cacheDB:
         # get matching row item corresponding to query from the SQL table
         cursor = self.connection.cursor()
         # Execute a SELECT statement to fetch the row
-        cursor.execute(f'SELECT * FROM {self.tabelName} WHERE query = ?', (query,))
+        cursor.execute(f'SELECT * FROM {self.tableName} WHERE query = ?', (query,))
         row = cursor.fetchone()
 
         if row:
@@ -116,7 +116,7 @@ class cacheDB:
             cursor.execute(
                 f'''
                     INSERT INTO {self.tableName} (query, code, success, message, clearCache)
-                    VALUES (?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?)
                 ''',
                 (query, *response.toTuple())
             )

@@ -33,9 +33,12 @@ def send_cql_cmd(query:str, cache: cacheDB):
         print("No cache found, sending cypher query to server")
         response:responseObj = __POST('/run', query)
         if response.clearCache:
-            _cleared:bool = cacheDB.clear_all_cache()
+            _cleared:bool = cache.clear_all_cache()
         else:
-            cacheDB.put_query_reponse(query, response)
+            if not response.success:    # save bad requests too to avoid sending it to server
+                cache.put_query_reponse(query, response)
+            else: 
+                cache.put_query_reponse(query, response)
     # check if response has any problems
     if response.code == STATUS_BAD_REQUEST or not response.success:
         __ERROR("Problem with the entry:\n"+response.message)
