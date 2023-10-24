@@ -4,7 +4,7 @@ dir=$(dirname "$0")
 cd $dir
 
 # change this for different test cases
-test="../tests/t6.cql"
+test="../tests/t7.cql"
 target="../IO/input.cql"
 
 cat $test > $target
