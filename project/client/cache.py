@@ -3,7 +3,7 @@ from response import responseObj
 import re
 import sqlite3
 
-MODIFYING_KEYWORDS = ["CREATE", "MERGE", "SET", "DELETE"]
+MODIFYING_KEYWORDS = ["CREATE", "MERGE", "SET", "DELETE", "REMOVE"]
 
 DEFAULT_DB_NAME = 'clientCache.db'
 DEFAULT_TABLE_NAME = "cache_table"
@@ -139,7 +139,18 @@ class cacheDB:
         """
         if response.clearCache:
             return False
+        
         # TODO: make sure keywords are actual operands an not properties (e.g. node name)
+        # ^^^^: check IO/isModifyQuery.txt to see if modify clauses are present
+        with open("IO/isModifyQuery.txt", "r") as flagFile:
+            content: str = flagFile.read()
+            isModifyQuery: bool = 'true' in content
+            if isModifyQuery:
+                print("Detected modify query flag set by parser")
+                return False
+            else:
+                return True
+
         keywords = '|'.join(MODIFYING_KEYWORDS)
         containsKeyword = bool(re.match(
             pattern='^(?=.*('+keywords+')).*$',
@@ -148,4 +159,5 @@ class cacheDB:
         ))
         if containsKeyword:
             return False
+        
         return True
