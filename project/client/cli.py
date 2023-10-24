@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import request
+from cache import cacheDB
 
 
 class Shell:
@@ -8,6 +9,7 @@ class Shell:
         self.cmdHeader: str = "_______________________\n"+"$: "
         self.commandHistory: list[str] = []
         self.serverActive: bool = False
+        self.cache: cacheDB = cacheDB()
 
     def start(self):
         print("============================================")
@@ -89,7 +91,7 @@ class Shell:
             print(stderr, file=sys.stderr)
         else:
             print("Input is valid")
-            request.send_cql_cmd(content)
+            request.send_cql_cmd(content, self.cache)
 
     def __cql(self, query: str):
         success = self.__write_to_IO(input=query)
@@ -101,7 +103,7 @@ class Shell:
             print(stderr, file=sys.stderr)
         else:
             print("Input is valid")
-            request.send_cql_cmd(query)
+            request.send_cql_cmd(query, self.cache)
 
     def __write_to_IO(self, input: str, path: str = "IO/input.cql") -> bool:
         try:
