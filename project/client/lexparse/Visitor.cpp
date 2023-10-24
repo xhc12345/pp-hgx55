@@ -13,7 +13,7 @@ std::any Visitor::visitOC_Cypher(CypherParser::OC_CypherContext* ctx) {
 
   // at this point, the entire AST has been visited. If flag triggered then it's a modify query
   // TODO: generate new file to indicate the query as updating
-  ofstream flagFile;
+  std::ofstream flagFile;
   flagFile.open ("../IO/isModifyQuery.txt");
   if(isUpdatingGraph){  
     flagFile << "true\n";
@@ -22,7 +22,7 @@ std::any Visitor::visitOC_Cypher(CypherParser::OC_CypherContext* ctx) {
   }
   flagFile.close();
   
-  return ret
+  return ret;
 }
 
 /* 

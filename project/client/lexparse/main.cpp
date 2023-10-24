@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "Visitor.h"
 #include "antlr4-runtime.h"
@@ -8,6 +9,19 @@
 using namespace std;
 using namespace antlr4;
 
+bool hasErrors = false;
+const bool isUpdatingGraph = false;
+void setUpdatingClauseFlag(){
+  std::ofstream flagFile;
+  flagFile.open ("../IO/isModifyQuery.txt");
+  if(isUpdatingGraph){  
+    flagFile << "true\n";
+  } else {
+    flagFile << "false\n";
+  }
+  flagFile.close();
+}
+
 class LexerErrorListener : public antlr4::BaseErrorListener {
  public:
   virtual void syntaxError(antlr4::Recognizer* recognizer,
@@ -16,6 +30,7 @@ class LexerErrorListener : public antlr4::BaseErrorListener {
                            size_t charPositionInLine,
                            const std::string& msg,
                            std::exception_ptr e) override {
+    hasErrors = true;
     std::cerr << "Lexer Error at line " << line << ":" << charPositionInLine
               << " - " << msg << std::endl;
   }
@@ -29,6 +44,7 @@ class ParserErrorListener : public antlr4::BaseErrorListener {
                            size_t charPositionInLine,
                            const std::string& msg,
                            std::exception_ptr e) override {
+    hasErrors = true;
     std::cerr << "Parser Error at line " << line << ":" << charPositionInLine
               << " - " << msg << std::endl;
   }
@@ -59,9 +75,12 @@ int main(int argc, const char* argv[]) {
   auto s = tree->toStringTree(&parser);
   std::cout << "Parse Tree: " << s << std::endl;
 
-  // std::cout << "Start visiting tree..." << s << std::endl;
-  Visitor visitor;
-  visitor.visit(tree);
+  if(!hasErrors){
+    // std::cout << "Start visiting tree..." << s << std::endl;
+    Visitor visitor;
+    visitor.visit(tree);
+  }
+  
 
   return 0;
 }
