@@ -34,7 +34,10 @@ class cacheDB:
     def clear_all_cache(self) -> bool:
         wiped: bool = False
         print("Wiping all cached responses")
-        # TODO: delete all rows in the db cache table
+        cursor = self.connection.cursor()
+        cursor.execute(f'DELETE FROM {self.tableName}')
+        self.connection.commit()
+        wiped = True
         return wiped
     
     def get_query_response(self, query: str) -> responseObj:
