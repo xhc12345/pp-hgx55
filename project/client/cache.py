@@ -1,7 +1,9 @@
 
 from response import responseObj
+import re
 import sqlite3
 
+MODIFYING_KEYWORDS = ["CREATE", "MERGE", "SET", "DELETE"]
 
 class cacheDB:
     def __init__(self) -> None:
@@ -41,6 +43,36 @@ class cacheDB:
             bool: the matching response to the query. If none exists, return None.
 
         """
+        if not self.__is_cacheable(query, response):
+            print("This command and its response can't be cached")
+            return False
         operationCompleted: bool = False
         # TODO: put/update target query and its response in the SQL table
         return operationCompleted
+    
+    def __is_cacheable(query: str, response: responseObj) -> bool:
+        """Checks if query contains commands that modifies the graph. If true then query non-cacheable.
+        Additionally, if reponse.clearCache is true then the query is automatically non-cacheable
+
+        Args:
+            query (str):
+                a string of query.
+            response (responseObj):
+                responseObj correctponding containing all info of the response from the server.
+
+        Returns:
+            bool: whether the query and response can be cached.
+
+        """
+        if response.clearCache:
+            return False
+        # TODO: make sure keywords are actual operands an not properties (e.g. node name)
+        keywords = '|'.join(MODIFYING_KEYWORDS)
+        containsKeyword = bool(re.match(
+            pattern='^(?=.*('+keywords+')).*$',
+            string=query,
+            flags=re.IGNORECASE
+        ))
+        if containsKeyword:
+            return False
+        return True
