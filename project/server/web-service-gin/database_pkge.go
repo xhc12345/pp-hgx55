@@ -39,14 +39,23 @@ func processNode(result *neo4j.ResultWithContext, nodeMap *map[string]interface{
 	nodeProps := node.Props
 	nodeInfo, err := json.Marshal(nodeProps)
 	handleError(err)
-
-	var nodeObj Node = Node{
-		ID:    nodeID,
-		Text:  nodeLabels,
-		Props: nodeProps,
-		Info:  string(nodeInfo),
+	var nodeText string
+	if len(nodeLabels) > 0 {
+		nodeText = nodeLabels[0]
+	} else if len(nodeInfo) > 0 {
+		nodeText = string(nodeInfo)
+	} else {
+		nodeText = nodeID
 	}
 
+	var nodeObj Node = Node{
+		ID:     nodeID,
+		Text:   nodeText,
+		Labels: nodeLabels,
+		Props:  nodeProps,
+		Info:   string(nodeInfo),
+	}
+	nodeObj.make_smalltalk_friendly()
 	fmt.Println("Node ID:", nodeObj.ID, "\tLabels:", nodeObj.Text, "\n\tProps:", nodeObj.Props, "\n\tDisplayed info:", nodeObj.Info)
 
 	(*nodeMap)[nodeObj.ID] = nodeObj
@@ -76,6 +85,7 @@ func processEdge(result *neo4j.ResultWithContext, edgeMap *map[string]interface{
 		Props:  edgeProps,
 		Info:   string(edgeInfo),
 	}
+	edgeObj.make_smalltalk_friendly()
 	fmt.Println("Edge ID:", edgeObj.ID, "\tFrom", edgeObj.Source, "to", edgeObj.Target, "\tType:", edgeObj.Text, "\n\tProps:", edgeObj.Props, "\n\tDisplayed info:", edgeObj.Info)
 
 	(*edgeMap)[edgeObj.ID] = edgeObj
