@@ -1,5 +1,5 @@
 "Change this file to desired path of the JSON file"
-fileName := 'input/graph1.json'.
+fileName := 'C:\Users\kevin\OneDrive\Documents\UT\Fa2023\ECE379K\Project\pp-hgx55\project\visualizer\Smalltalk\input\input.json'.
 fileName asFileReference readStreamDo: [ :readStream |
 	data := STONJSON fromStream: readStream
 ].
@@ -36,13 +36,13 @@ Transcript show: '================================='.
 Transcript cr.
 
 1 to: numberOfNodes do: [ :i|
-	Transcript show: 'text for Node  ', i asString, ' = "',((data_nodes at: i) at: 'text'), '", additional info: ', ((data_nodes at: i) at: 'info') asString.
+	Transcript show: 'text for Node  ', i asString, ' = "',((data_nodes at: i) at: 'Text'), '", additional info: ', ((data_nodes at: i) at: 'Info') asString.
 	Transcript cr.
 ].
 
 
 1 to: numberOfEdges do: [ :i|
-	Transcript show: 'text at ', i asString, ' = "',((data_edges at: i) at: 'text'), '", from ', ((data_edges at: i) at: 'source') asString, ' to ', ((data_edges at: i) at: 'target') asString.
+	Transcript show: 'text at ', i asString, ' = "',((data_edges at: i) at: 'Text'), '", from ', ((data_edges at: i) at: 'Source') asString, ' to ', ((data_edges at: i) at: 'Target') asString.
 	Transcript cr.
 ].
 
@@ -54,12 +54,13 @@ graph := RSCanvas new.
 "Add nodes"
 nodes := RSCircle models: (1 to: numberOfNodes) size: [ :nb | nodeSize ]. 
 1 to: nodes size do: [ :i |
-	| node node_data label |
+	| node node_data label hoverText |
 	node := nodes at: i.
 	node_data := data_nodes at: i.
-	label := (node_data at: 'text'), Character cr asString, (node_data at: 'info').
+	label := (node_data at: 'Text').
+	hoverText := ((node_data at: 'Labels') joinUsing: ', '), Character cr asString, (node_data at: 'Info').
 	node @ (RSLabeled highlightable text: label).
-	node @ (RSPopup text: label).
+	node @ (RSPopup text: hoverText).
 	node color: Color black .
 ].
 graph addAll: nodes.
@@ -67,15 +68,17 @@ graph addAll: nodes.
 "Add edges"
 edges := RSArrowedLine models: (1 to: data_edges size).
 1 to: data_edges size do: [ :i |
-	| edge edge_data label source target |
+	| edge edge_data label source target relationship hoverText |
 	edge := edges at: i.
 	edge_data := data_edges at: i.
-	label := (edge_data at: 'text').
-	source := (edge_data at: 'source') asNumber .
-	target := (edge_data at: 'target') asInteger .
+	label := (edge_data at: 'Text').
+	source := (edge_data at: 'Source') asNumber .
+	target := (edge_data at: 'Target') asInteger .
+	relationship := ((data_nodes at: source) at: 'Text') asString, ' - ', label, ' -> ', ((data_nodes at: target) at: 'Text').
+	hoverText := label, Character cr asString, relationship, Character cr asString, (edge_data at: 'Info').
 	
 	edge @ (RSLabeled highlightable text: label).
-	edge @ (RSPopup text: label).
+	edge @ (RSPopup text: hoverText).
 	
 	edge from: (nodes at: source).
 	edge to: (nodes at: target).

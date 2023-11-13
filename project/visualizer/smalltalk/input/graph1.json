@@ -1,109 +1,109 @@
 {
     "nodes":{
         "1":{
-            "text":"Person",
-            "info":"{name: 'Alexia Midgar'}"
+            "Text":"Person",
+            "Info":"{name: 'Alexia Midgar'}"
         },
         "2":{
-            "text":"Person",
-            "info":"{name: 'Beta'}"
+            "Text":"Person",
+            "Info":"{name: 'Beta'}"
         },
         "3":{
-            "text":"Person",
-            "info":"{name: 'Cid Kagenou'}"
+            "Text":"Person",
+            "Info":"{name: 'Cid Kagenou'}"
         },
         "4":{
-            "text":"Organization",
-            "info":"{name: 'Midgar Academy'}"
+            "Text":"Organization",
+            "Info":"{name: 'Midgar Academy'}"
         },
         "5":{
-            "text":"Organization",
-            "info":"{name: 'Shadow Garden'}"
+            "Text":"Organization",
+            "Info":"{name: 'Shadow Garden'}"
         },
         "6":{
-            "text":"Organization",
-            "info":"{name: 'Midgar Royalty'}"
+            "Text":"Organization",
+            "Info":"{name: 'Midgar Royalty'}"
         },
         "7":{
-            "text":"Origin",
-            "info":"{name: 'Midgar Kingdom'}"
+            "Text":"Origin",
+            "Info":"{name: 'Midgar Kingdom'}"
         }
     },
     "edges":{
         "1":{
-            "text":"Loves",
-            "source":"1",
-            "target":"3"
+            "Text":"Loves",
+            "Source":"1",
+            "Target":"3"
         },
         "2":{
-            "text":"Loves",
-            "source":"2",
-            "target":"3"
+            "Text":"Loves",
+            "Source":"2",
+            "Target":"3"
         },
         "3":{
-            "text":"Hates",
-            "source":"1",
-            "target":"2"
+            "Text":"Hates",
+            "Source":"1",
+            "Target":"2"
         },
         "4":{
-            "text":"Hates",
-            "source":"2",
-            "target":"1"
+            "Text":"Hates",
+            "Source":"2",
+            "Target":"1"
         },
         "5":{
-            "text":"Subordinate of",
-            "source":"2",
-            "target":"3"
+            "Text":"Subordinate of",
+            "Source":"2",
+            "Target":"3"
         },
         "6":{
-            "text":"Belongs to",
-            "source":"5",
-            "target":"3"
+            "Text":"Belongs to",
+            "Source":"5",
+            "Target":"3"
         },
         "7":{
-            "text":"Works at",
-            "source":"2",
-            "target":"5"
+            "Text":"Works at",
+            "Source":"2",
+            "Target":"5"
         },
         "8":{
-            "text":"Part of",
-            "source":"1",
-            "target":"6"
+            "Text":"Part of",
+            "Source":"1",
+            "Target":"6"
         },
         "9":{
-            "text":"Established",
-            "source":"6",
-            "target":"4"
+            "Text":"Established",
+            "Source":"6",
+            "Target":"4"
         },
         "10":{
-            "text":"Despise",
-            "source":"6",
-            "target":"5"
+            "Text":"Despise",
+            "Source":"6",
+            "Target":"5"
         },
         "11":{
-            "text":"Studies at",
-            "source":"1",
-            "target":"4"
+            "Text":"Studies at",
+            "Source":"1",
+            "Target":"4"
         },
         "12":{
-            "text":"Studies at",
-            "source":"3",
-            "target":"4"
+            "Text":"Studies at",
+            "Source":"3",
+            "Target":"4"
         },
         "13":{
-            "text":"Based in",
-            "source":"4",
-            "target":"7"
+            "Text":"Based in",
+            "Source":"4",
+            "Target":"7"
         },
         "14":{
-            "text":"Based in",
-            "source":"5",
-            "target":"7"
+            "Text":"Based in",
+            "Source":"5",
+            "Target":"7"
         },
         "15":{
-            "text":"Based in",
-            "source":"6",
-            "target":"7"
+            "Text":"Based in",
+            "Source":"6",
+            "Target":"7"
         }
     }
 }
