@@ -1,0 +1,26 @@
+<><> Processing actions <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+[ERROR] The compilation of OCaml_visualiser failed at "/home/kevin/.opam/opam-init/hooks/sandbox.sh build dune build -p OCaml_visualiser -j 15 @install".
+
+#=== ERROR while compiling OCaml_visualiser.~dev ==============================#
+# context     2.0.5 | linux/x86_64 | ocaml-system.4.08.1 | pinned(file:///mnt/c/Users/kevin/OneDrive/Documents/UT/Fa2023/ECE379K/Project/pp-hgx55/project/visualizer/OCaml_visualiser)
+# path        ~/.opam/default/.opam-switch/build/OCaml_visualiser.~dev
+# command     ~/.opam/opam-init/hooks/sandbox.sh build dune build -p OCaml_visualiser -j 15 @install
+# exit-code   1
+# env-file    ~/.opam/log/OCaml_visualiser-172630-1872ec.env
+# output-file ~/.opam/log/OCaml_visualiser-172630-1872ec.out
+### output ###
+# (cd _build/default && /usr/bin/ocamlc.opt -w -40 -g -bin-annot -I bin/.main.eobjs/byte -I /home/kevin/.opam/default/lib/seq -I /home/kevin/.opam/default/lib/yojson -I lib/.OCaml_visualiser.objs/byte -no-alias-deps -open Dune__exe -o bin/.main.eobjs/byte/dune__exe__Graph_parser.cmo -c -impl bin/graph_parser.ml)
+# File "bin/graph_parser.ml", line 16, characters 33-41:
+# 16 |     let source = List.assoc edge["source"] nodes in
+#                                       ^^^^^^^^
+# Error: This expression has type string but an expression was expected of type
+#          'a * ('b -> 'c)
+
+
+
+<><> Error report <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+┌─ The following actions failed
+│ λ build OCaml_visualiser ~dev
+└─ 
+╶─ No changes have been performed
+# Run eval $(opam env) to update the current shell environment

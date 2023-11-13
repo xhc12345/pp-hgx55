@@ -1,4 +1,4 @@
 (executable
  (public_name OCaml_visualiser)
  (name main)
- (libraries OCaml_visualiser))
+ (libraries OCaml_visualiser yojson))
