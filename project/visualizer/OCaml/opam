@@ -1,0 +1,7 @@
+opam-version: "2.0.5"
+name: "ocaml_visualiser"
+version: "1.0"
+depends: [
+  "dune"
+#   "another-library" {>= "2.0"}
+]
