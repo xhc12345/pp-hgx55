@@ -57,3 +57,11 @@ func runCqlCmd(c *gin.Context) {
 		})
 	}
 }
+
+func testrun(c *gin.Context) {
+	testRun()
+	c.IndentedJSON(http.StatusBadRequest, gin.H{
+		"success": true,
+		"message": "Check server side console for print",
+	})
+}
