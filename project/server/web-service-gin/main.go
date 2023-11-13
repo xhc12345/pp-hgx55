@@ -28,7 +28,7 @@ func setupRouter() *gin.Engine {
 	router := gin.Default()
 	router.GET("/ping", ping)
 	router.POST("/run", runCqlCmd)
-	router.GET("/testrun", testrun)
+	router.GET("/graph", getGraph)
 	return router
 }
 

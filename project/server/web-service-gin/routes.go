@@ -58,8 +58,9 @@ func runCqlCmd(c *gin.Context) {
 	}
 }
 
-func testrun(c *gin.Context) {
-	testRun()
+func getGraph(c *gin.Context) {
+	// getAllNodes()
+	getAllEdges()
 	c.IndentedJSON(http.StatusBadRequest, gin.H{
 		"success": true,
 		"message": "Check server side console for print",
