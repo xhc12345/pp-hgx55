@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -32,10 +33,21 @@ func processNode(result *neo4j.ResultWithContext) {
 	if !convertible {
 		panic("NODE NOT OK")
 	}
+
 	nodeID := node.GetElementId()
 	nodeLabels := node.Labels
 	nodeProps := node.Props
-	fmt.Println("Node ID:", nodeID, "\tLabels:", nodeLabels, "\n\tProps:", nodeProps)
+	nodeInfo, err := json.Marshal(nodeProps)
+	handleError(err)
+
+	var nodeObj Node = Node{
+		id:    nodeID,
+		text:  nodeLabels,
+		props: nodeProps,
+		info:  string(nodeInfo),
+	}
+
+	fmt.Println("Node ID:", nodeObj.id, "\tLabels:", nodeObj.text, "\n\tProps:", nodeObj.props, "\n\tDisplayed info:", nodeObj.info)
 }
 
 func processEdge(result *neo4j.ResultWithContext) {
@@ -45,12 +57,24 @@ func processEdge(result *neo4j.ResultWithContext) {
 	if !convertible {
 		panic("EDGE NOT OK")
 	}
+
 	edgeID := edge.GetElementId()
 	edgeEnd := edge.EndElementId
 	edgeStart := edge.StartElementId
 	edgeType := edge.Type
 	edgeProps := edge.Props
-	fmt.Println("Edge ID:", edgeID, "\tFrom", edgeStart, "to", edgeEnd, "\tType:", edgeType, "\n\tProps:", edgeProps)
+	edgeInfo, err := json.Marshal(edgeProps)
+	handleError(err)
+
+	var edgeObj Edge = Edge{
+		id:     edgeID,
+		text:   edgeType,
+		source: edgeStart,
+		target: edgeEnd,
+		props:  edgeProps,
+		info:   string(edgeInfo),
+	}
+	fmt.Println("Edge ID:", edgeObj.id, "\tFrom", edgeObj.source, "to", edgeObj.target, "\tType:", edgeObj.text, "\n\tProps:", edgeObj.props, "\n\tDisplayed info:", edgeObj.info)
 }
 
 func getAllNodesOrEdges(nodeMode bool) {
@@ -91,48 +115,3 @@ func compileGraph() {
 	fmt.Println()
 	getAllNodesOrEdges(false)
 }
-
-// func getAllNodes() {
-// 	ctx := context.Background()
-// 	DB_address := os.Getenv("neo4j@v4_address") // set by main.go
-// 	DB_account := os.Getenv("neo4j@v4_account")
-// 	DB_password := os.Getenv("neo4j@v4_password")
-// 	driver, err := neo4j.NewDriverWithContext(DB_address, neo4j.BasicAuth(DB_account, DB_password, ""))
-// 	handleError(err)
-// 	err = driver.VerifyConnectivity(ctx)
-// 	handleError(err)
-// 	defer handleClose(ctx, driver)
-
-// 	session := driver.NewSession(ctx, neo4j.SessionConfig{ /*AccessMode: neo4j.AccessModeWrite*/ })
-// 	defer handleClose(ctx, session)
-
-// 	result, err := session.Run(ctx, QUERY_ALL_NODES, nil)
-// 	handleError(err)
-
-// 	for result.Next(ctx) {
-// 		processNode(&result)
-// 	}
-
-// }
-
-// func getAllEdges() {
-// 	ctx := context.Background()
-// 	DB_address := os.Getenv("neo4j@v4_address") // set by main.go
-// 	DB_account := os.Getenv("neo4j@v4_account")
-// 	DB_password := os.Getenv("neo4j@v4_password")
-// 	driver, err := neo4j.NewDriverWithContext(DB_address, neo4j.BasicAuth(DB_account, DB_password, ""))
-// 	handleError(err)
-// 	err = driver.VerifyConnectivity(ctx)
-// 	handleError(err)
-// 	defer handleClose(ctx, driver)
-
-// 	session := driver.NewSession(ctx, neo4j.SessionConfig{ /*AccessMode: neo4j.AccessModeWrite*/ })
-// 	defer handleClose(ctx, session)
-
-// 	result, err := session.Run(ctx, QUERY_ALL_EDGES, nil)
-// 	handleError(err)
-// 	for result.Next(ctx) {
-// 		processEdge(&result)
-// 	}
-
-// }

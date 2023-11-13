@@ -11,6 +11,6 @@ go mod tidy
 # cd ..
 # ./web-service-gin/web-service-gin
 d="web-service-gin"
-go run $d/main.go $d/routes.go $d/database_shell.go $d/database_pkge.go
+go run $d/main.go $d/routes.go $d/database_shell.go $d/database_pkge.go $d/models.go
 
 echo "Server down"

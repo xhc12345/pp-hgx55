@@ -2,7 +2,7 @@ package main
 
 type Node struct {
 	id    string
-	text  string // Labels
+	text  []string // Labels
 	info  string
 	props map[string]any
 }
