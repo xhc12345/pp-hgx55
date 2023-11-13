@@ -1,3 +1,4 @@
+import json
 import sys
 import subprocess
 import request
@@ -62,6 +63,24 @@ class Shell:
                     continue
                 path: str = tokens[1]
                 self.__path(path)
+
+            elif cmdType == "graph":
+                allowArgs = ["ocaml", "smalltalk"]
+                if len(tokens) < 1 or len(tokens) > 2:
+                    self.__ERROR("graph command can have optional 1 and only 1 argument")
+                    continue
+                if len(tokens) == 2:
+                    visualizer: str = tokens[1]
+                    if visualizer not in allowArgs:
+                        self.__ERROR("graph command argument can only be `ocaml` or `smalltalk`")
+                        continue
+                    self.__graph(visualizer)
+                else:
+                    self.__graph()
+
+            elif cmdType == "dump":
+                print("Clearing the cache table")
+                self.__dump()
 
             else:
                 print("Unsupported input: " + cmd + "\n")
@@ -133,6 +152,18 @@ class Shell:
         except FileNotFoundError:
             return "CLIENT ERROR: IO/stderr.txt not found"
 
+    def __graph(self, visualizer:str=None):
+        graphJSON = request.get_graph(self.cache)
+        graphDict = json.loads(graphJSON)
+        with open("../visualizer/Smalltalk/input/input.json", "w") as targetFile:
+            json.dump(graphDict, targetFile, indent=4)
+        if visualizer:
+            print("Using visualizer: " + visualizer)
+            # TODO: launch the respective visualizer
+
+    def __dump(self):
+        self.cache.clear_all_cache()
+
     def __ERROR(self, msg: str):
         print("CLIENT ERROR: " + msg, file=sys.stderr)
 
@@ -144,6 +175,11 @@ class Shell:
         )
         print("- cql <cypher_query>")
         print("\tgives the client the query to process directly (has to be one-liner)")
+        print("- graph <ocaml | smalltalk>")
+        print("\tfetch the graph JSON of the entire database")
+        print("\tif 2nd argument present, and is either `ocaml` or `smalltalk`, then launch the respective visualizer")
+        print("- dump")
+        print("\tclear everything in the cache, for testing or (hopefull not) last resort")
         print("- exit")
         print("\texits the program")
         print("- help")

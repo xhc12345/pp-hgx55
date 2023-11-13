@@ -1,3 +1,4 @@
+import json
 import sys
 from typing import Tuple
 import requests
@@ -11,6 +12,22 @@ STATUS_NOT_FOUND=404
 
 
 URL = "http://localhost:8080"
+
+def get_graph(cache: cacheDB) -> str:
+    print("Fetching the graph JSON of the current database")
+    graphJSON: str = cache.get_graph_response()
+    if not graphJSON:
+        print("No graph JSON cached, requesting server for one")
+        code, graphJSON = __GET_GRAPH()
+        if graphJSON:
+            cache.put_graph_response(graphJSON)
+        else:
+            __ERROR("problem while requesting graph JSON. Code="+str(code))
+            return None
+    else:
+        print("Found cached graph JSON, using it instead of requesting from server")
+    return graphJSON
+
 
 def ping_server() -> bool:
     print("pinging server")
@@ -65,6 +82,21 @@ def __POST(route:str, body:str) -> responseObj:
     code:int = response.status_code
     responseBody:dict = response.json()
     return responseObj(code, responseBody)
+
+def __GET_GRAPH() -> Tuple[int, str]:
+    print("sending GET GRAPH request")
+    target = URL + "/" + "graph"
+    try:
+        response:requests.Response = requests.get(target)
+    except:
+        return NO_CONNECTION, None
+    code:int = response.status_code
+    responseBody:dict = response.json()
+    graphDict: dict = responseBody.get("graph", None)
+    if not graphDict:
+        return code, None
+    graphStr = json.dumps(graphDict)
+    return code, graphStr
 
 def __ERROR(msg:str):
     print("REQUEST ERROR:", msg, file=sys.stderr)
