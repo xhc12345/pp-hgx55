@@ -59,9 +59,10 @@ func runCqlCmd(c *gin.Context) {
 }
 
 func getGraph(c *gin.Context) {
-	compileGraph()
+	graph := compileGraph()
 	c.IndentedJSON(http.StatusBadRequest, gin.H{
 		"success": true,
-		"message": "Check server side console for print",
+		"message": "Generated JSON for graph",
+		"graph":   graph,
 	})
 }

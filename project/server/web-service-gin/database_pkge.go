@@ -26,7 +26,7 @@ func handleClose(ctx context.Context, closer ctxCloser) {
 const QUERY_ALL_NODES string = "MATCH (n) RETURN n"
 const QUERY_ALL_EDGES string = "MATCH ()-[r]->() RETURN r"
 
-func processNode(result *neo4j.ResultWithContext) {
+func processNode(result *neo4j.ResultWithContext, nodeMap *map[string]interface{}) {
 	record := (*result).Record()
 	nodeValue := record.Values[0]
 	node, convertible := nodeValue.(neo4j.Node)
@@ -41,16 +41,18 @@ func processNode(result *neo4j.ResultWithContext) {
 	handleError(err)
 
 	var nodeObj Node = Node{
-		id:    nodeID,
-		text:  nodeLabels,
-		props: nodeProps,
-		info:  string(nodeInfo),
+		ID:    nodeID,
+		Text:  nodeLabels,
+		Props: nodeProps,
+		Info:  string(nodeInfo),
 	}
 
-	fmt.Println("Node ID:", nodeObj.id, "\tLabels:", nodeObj.text, "\n\tProps:", nodeObj.props, "\n\tDisplayed info:", nodeObj.info)
+	fmt.Println("Node ID:", nodeObj.ID, "\tLabels:", nodeObj.Text, "\n\tProps:", nodeObj.Props, "\n\tDisplayed info:", nodeObj.Info)
+
+	(*nodeMap)[nodeObj.ID] = nodeObj
 }
 
-func processEdge(result *neo4j.ResultWithContext) {
+func processEdge(result *neo4j.ResultWithContext, edgeMap *map[string]interface{}) {
 	record := (*result).Record()
 	edgeValue := record.Values[0]
 	edge, convertible := edgeValue.(neo4j.Relationship)
@@ -67,17 +69,19 @@ func processEdge(result *neo4j.ResultWithContext) {
 	handleError(err)
 
 	var edgeObj Edge = Edge{
-		id:     edgeID,
-		text:   edgeType,
-		source: edgeStart,
-		target: edgeEnd,
-		props:  edgeProps,
-		info:   string(edgeInfo),
+		ID:     edgeID,
+		Text:   edgeType,
+		Source: edgeStart,
+		Target: edgeEnd,
+		Props:  edgeProps,
+		Info:   string(edgeInfo),
 	}
-	fmt.Println("Edge ID:", edgeObj.id, "\tFrom", edgeObj.source, "to", edgeObj.target, "\tType:", edgeObj.text, "\n\tProps:", edgeObj.props, "\n\tDisplayed info:", edgeObj.info)
+	fmt.Println("Edge ID:", edgeObj.ID, "\tFrom", edgeObj.Source, "to", edgeObj.Target, "\tType:", edgeObj.Text, "\n\tProps:", edgeObj.Props, "\n\tDisplayed info:", edgeObj.Info)
+
+	(*edgeMap)[edgeObj.ID] = edgeObj
 }
 
-func getAllNodesOrEdges(nodeMode bool) {
+func getAllNodesOrEdges(nodeMode bool, mapOfTargets *map[string]interface{}) {
 	// if nodeMode is true, get all nodes. else get all edges
 	ctx := context.Background()
 	DB_address := os.Getenv("neo4j@v4_address") // set by main.go
@@ -93,7 +97,7 @@ func getAllNodesOrEdges(nodeMode bool) {
 	defer handleClose(ctx, session)
 
 	var queryToSend string
-	var processFunction func(result *neo4j.ResultWithContext)
+	var processFunction func(*neo4j.ResultWithContext, *map[string]interface{})
 	if nodeMode { // get all nodes
 		queryToSend = QUERY_ALL_NODES
 		processFunction = processNode
@@ -105,13 +109,28 @@ func getAllNodesOrEdges(nodeMode bool) {
 	result, err := session.Run(ctx, queryToSend, nil)
 	handleError(err)
 	for result.Next(ctx) {
-		processFunction(&result)
+		processFunction(&result, mapOfTargets)
 	}
 
 }
 
-func compileGraph() {
-	getAllNodesOrEdges(true)
+func compileGraph() map[string]interface{} {
+	graphMap := make(map[string]interface{})
+
+	nodeMap := make(map[string]interface{})
+	getAllNodesOrEdges(true, &nodeMap)
+	graphMap["nodes"] = nodeMap
+
 	fmt.Println()
-	getAllNodesOrEdges(false)
+
+	edgeMap := make(map[string]interface{})
+	getAllNodesOrEdges(false, &edgeMap)
+	graphMap["edges"] = edgeMap
+
+	graphJSON, err := json.MarshalIndent(graphMap, "", "\t")
+	handleError(err)
+	fmt.Println("FINAL GRAPH JSON:")
+	fmt.Println(string(graphJSON))
+
+	return graphMap
 }
