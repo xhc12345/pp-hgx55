@@ -25,5 +25,5 @@ done
 # Calculate the average execution time
 avgExecTime=$(echo "scale=4; $totalTime / $iterations" | bc)
 
-# Print the average execution time
+# Print execution time summary
 echo "$fileName: Average execution time over $iterations iterations: $avgExecTime seconds. Total time: $totalTime seconds"

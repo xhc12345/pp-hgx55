@@ -7,15 +7,14 @@ echo "STARTING BENCHMARK"
 
 
 folder="queries"
-# Check if the subfolder exists
+# Checks if the subfolder exists
 if [ ! -d "$folder" ]; then
   echo "Error: Subfolder $folder not found."
   exit 1
 fi
 
+# goes through each cql file in queries folder
 cd $folder
-
-# Iterate through every CQL file in the subfolder and call the second script for each file
 for file in *; do
   # Check if the file exists
   if [ ! -f "$file" ]; then
@@ -23,7 +22,7 @@ for file in *; do
     continue
   fi
 
-  # Call the second script for each file
+  # Runs the query in the file against server 100 times
   ./../curl.sh "$file"
 done
 
