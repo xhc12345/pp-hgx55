@@ -3,9 +3,10 @@
 dir=$(dirname "$0")
 cd $dir
 
+set -e  # stop when error
+
 echo "building ocaml visualizer"
-$dune build
-# opam exec -- dune build
+opam exec -- dune build
 
 echo "starting visualizer program"
-bash ./_build/default/bin/main.exe
+./_build/default/bin/main.exe

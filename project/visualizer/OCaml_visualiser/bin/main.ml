@@ -1,38 +1,28 @@
-open Graph_generator
 
-let () =
-  let json_str = {|{
-    "nodes":{
-        "1":{
-            "text":"Person",
-            "info":"{name: 'Alexia Midgar'}"
-        },
-        "2":{
-            "text":"Person",
-            "info":"{name: 'Beta'}"
-        },
-        "3":{
-            "text":"Person",
-            "info":"{name: 'Cid Kagenou'}"
-        }
-    },
-    "edges":{
-        "1":{
-            "text":"Loves",
-            "source":"1",
-            "target":"3"
-        },
-        "2":{
-            "text":"Loves",
-            "source":"2",
-            "target":"3"
-        },
-        "3":{
-            "text":"Hates",
-            "source":"1",
-            "target":"2"
-        }
-    }
-}|} in
 
-  Graph_generator.parse_json_data json_str
+let input = "../Smalltalk/input/input.json" in
+
+let node_json = File_fetch.get_nodes_or_edges input "nodes" in
+
+let nodes = Node_processor.read_nodes_str node_json in
+let print_all_nodes assoc_list = 
+    List.iter (fun (key, value) ->
+        Printf.printf "\"%s\":, " key;
+        Node_processor.print_node_simple value
+    ) assoc_list
+in
+print_all_nodes nodes;
+
+Printf.printf "\n=====================\n";
+
+let edge_json = File_fetch.get_nodes_or_edges input "edges" in
+
+let edges = Edge_processor.read_edges_str edge_json nodes in
+let print_all_edges assoc_list =
+    List.iter (fun (key, value) ->
+        Printf.printf "\"%s\":, " key;
+        Edge_processor.print_edge_simple value
+    ) assoc_list
+in
+print_all_edges edges
+
