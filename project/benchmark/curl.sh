@@ -12,7 +12,7 @@ if [ ! -f "$fileName" ]; then
   exit 1
 fi
 
-iterations=10
+iterations=100
 totalTime=0
 
 # Run the curl command by iteration times
@@ -26,7 +26,7 @@ for ((i=1; i<=$iterations; i++)); do
 done
 
 # Calculate the average execution time
-avgExecTime=$(echo "scale=4; $totalTime / $iterations" | bc)
+avgExecTime=$(echo "$totalTime / $iterations" | bc)
 
 # Print the average execution time
 echo "Average execution time over $iterations iterations: $avgExecTime seconds. Total time: $totalTime seconds"
