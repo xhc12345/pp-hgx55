@@ -11,6 +11,7 @@ class Shell:
         self.commandHistory: list[str] = []
         self.serverActive: bool = False
         self.cache: cacheDB = cacheDB()
+        self.ocamlInit: bool = False
 
     def start(self):
         print("============================================")
@@ -160,6 +161,11 @@ class Shell:
         if visualizer:
             print("Using visualizer: " + visualizer)
             # TODO: launch the respective visualizer
+            if visualizer == "ocaml":
+                if not self.ocamlInit:
+                    subprocess.run(["bash", "../visualizer/OCaml_visualiser/init.sh"])
+                    self.ocamlInit = True
+                subprocess.run(["bash", "../visualizer/OCaml_visualiser/start.sh"])
 
     def __dump(self):
         self.cache.clear_all_cache()
