@@ -44,8 +44,8 @@ let print_edge_simple edge =
            id    s    eType t           eType       props
 
 let print_all_edges assoc_list = List.iter (
-  fun (key, value) ->
-    Printf.printf "\"%s\":, " key;
+  fun (_, value) ->
+    (* Printf.printf "\"%s\":, " key; *)
     print_edge_simple value
 ) assoc_list
 

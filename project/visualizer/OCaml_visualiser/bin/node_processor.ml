@@ -58,8 +58,8 @@ let print_node_simple node =
            id         text         labels      props
 
 let print_all_nodes assoc_list = List.iter (
-  fun (key, value) ->
-      Printf.printf "\"%s\":, " key;
+  fun (_, value) ->
+      (* Printf.printf "\"%s\":, " key; *)
       print_node_simple value
 ) assoc_list
 
