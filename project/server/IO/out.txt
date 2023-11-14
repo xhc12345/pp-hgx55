@@ -1,3 +1,7 @@
-[31mVariable `l` not defined (line 1, column 18 (offset: 17))
-"match (n) return l"
-                  ^[m
++-------------+
+| name | born |
++-------------+
++-------------+
+
+0 rows
+ready to start consuming query after 2 ms, results consumed after another 0 ms

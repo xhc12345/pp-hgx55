@@ -6,3 +6,4 @@ cd $dir
 echo "STARTING BENCHMARK"
 ./curl.sh
 
+echo "DONE"
