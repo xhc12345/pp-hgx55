@@ -1,5 +1,5 @@
 "Change this file to desired path of the JSON file"
-fileName := 'C:\Users\kevin\OneDrive\Documents\UT\Fa2023\ECE379K\Project\pp-hgx55\project\visualizer\Smalltalk\input\input.json'.
+fileName := 'input/input.json'.
 fileName asFileReference readStreamDo: [ :readStream |
 	data := STONJSON fromStream: readStream
 ].

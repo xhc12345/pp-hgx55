@@ -1,0 +1,122 @@
+{
+    "edges": {
+        "1": {
+            "ID": "1",
+            "Text": "WORKS_AT",
+            "Source": "2",
+            "Target": "4",
+            "Info": "{}",
+            "Props": {
+                "years": 50,
+                "makes": 50000
+            }
+        },
+        "2": {
+            "ID": "2",
+            "Text": "FRIENDS_WITH",
+            "Source": "2",
+            "Target": "3",
+            "Info": "{}",
+            "Props": {
+                "years": 6
+            }
+        },
+        "3": {
+            "ID": "3",
+            "Text": "random relationship edge",
+            "Source": "5",
+            "Target": "1",
+            "Info": "{\"prop1\":\"property 1 here\",\"prop2\":\"property 2 here\"}",
+            "Props": {
+                "prop1": "property 1 here",
+                "prop2": "property 2 here",
+                "years": 5,
+                "makes": -20000
+            }
+        }
+    },
+    "nodes": {
+        "1": {
+            "ID": "1",
+            "Text": "University",
+            "Labels": [
+                "University",
+                "Research Institute",
+                "Laboratory"
+            ],
+            "Info": "{\"name\":\"UT Austin\",\"students\":50000}",
+            "Props": {
+                "name": "UT Austin",
+                "students": 50000
+            }
+        },
+        "2": {
+            "ID": "2",
+            "Text": "Person",
+            "Labels": [
+                "Person"
+            ],
+            "Info": "{\"age\":30,\"name\":\"Alice\"}",
+            "Props": {
+                "age": 30,
+                "name": "Alice"
+            }
+        },
+        "3": {
+            "ID": "3",
+            "Text": "Person",
+            "Labels": [
+                "Person"
+            ],
+            "Info": "{\"age\":28,\"name\":\"Bob\"}",
+            "Props": {
+                "age": 28,
+                "name": "Bob"
+            }
+        },
+        "4": {
+            "ID": "4",
+            "Text": "Company",
+            "Labels": [
+                "Company"
+            ],
+            "Info": "{\"name\":\"Acme Inc.\"}",
+            "Props": {
+                "name": "Acme Inc."
+            }
+        },
+        "5": {
+            "ID": "5",
+            "Text": "random number",
+            "Labels": [
+                "random number",
+                "ultimate question of life, the universe, and everything"
+            ],
+            "Info": "{\"number\":42}",
+            "Props": {
+                "number": 42,
+                "age": 42,
+                "students": 40000
+            }
+        },
+        "6": {
+            "ID": "6",
+            "Text": "NoProps",
+            "Labels": [
+                "NoProps"
+            ],
+            "Info": "{}",
+            "Props": {}
+        },
+        "7": {
+            "ID": "7",
+            "Text": "{\"prop\":\"no labels\"}",
+            "Labels": [],
+            "Info": "{\"prop\":\"no labels\"}",
+            "Props": {
+                "prop": "no labels",
+                "students": 70000
+            }
+        }
+    }
+}
