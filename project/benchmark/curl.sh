@@ -1,9 +1,6 @@
 #!/bin/bash
 
-dir=$(dirname "$0")
-cd $dir
-
-fileName="queries/1.cql"
+fileName=$1
 API_ENDPOINT="http://localhost:8080/run"
 
 # Check if the file exists
@@ -26,7 +23,7 @@ for ((i=1; i<=$iterations; i++)); do
 done
 
 # Calculate the average execution time
-avgExecTime=$(echo "$totalTime / $iterations" | bc)
+avgExecTime=$(echo "scale=4; $totalTime / $iterations" | bc)
 
 # Print the average execution time
-echo "Average execution time over $iterations iterations: $avgExecTime seconds. Total time: $totalTime seconds"
+echo "$fileName: Average execution time over $iterations iterations: $avgExecTime seconds. Total time: $totalTime seconds"
